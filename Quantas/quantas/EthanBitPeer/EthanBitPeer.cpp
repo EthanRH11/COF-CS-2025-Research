@@ -16,67 +16,63 @@ QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 
 namespace quantas {
 
-//
-// Example Channel definitions
-//
-ExamplePeer::~ExamplePeer() {}
+// class EthanBitPeer : public Peer<bitcoinMessage> {
+//   private:
+//     bool isByzantine;                    // determines if the peer is
+//     malicious vector<bitcoinBlock> blockChain;     // Main blockchain
+//     vector<bitcoinBlock> unlinkedBlocks; // Blocks without known parents
+//     unordered_map<int, bool> spentTransactions; // Spent transaction tracker
+//   public:
+//     EthanBitPeer(long);
+//     EthanBitPeer(const EthanBitPeer &rhs);
+//     ~EthanBitPeer();
 
-ExamplePeer::ExamplePeer(const ExamplePeer &rhs) : Peer<ExampleMessage>(rhs) {}
+//     /*** 🚀 General Blockchain Functions ***/
 
-ExamplePeer::ExamplePeer(long id) : Peer(id) {}
+//     void checkIncomingMessages(); // Processes incoming blocks/transactions
+//     void linkBlocks(); // Attempts to add unlinked blocks to the blockchain
+//     bool shouldSubmitTransaction(
+//     );                        // Checks if this node should submit a
+//     transaction void submitTransaction(); // Creates a new transaction and
+//     broadcasts it bool canMineBlock();      // Determines if this node can
+//     mine a block void mineBlock(
+//     ); // Mines the next transaction, adds to blockchain, and broadcasts it
+//     bitcoinTransaction findNextUnminedTransaction(
+//     ); // Finds next unmined transaction from the longest chain
 
-void ExamplePeer::performComputation() {
-    cout << "Peer:" << id() << " performing computation" << endl;
-    // Send message to self
-    ExampleMessage msg;
-    msg.message = "Message: it's me " + std::to_string(id()) + "!";
-    msg.aPeerId = std::to_string(id());
-    Packet<ExampleMessage> newMsg(getRound(), id(), id());
-    newMsg.setMessage(msg);
-    pushToOutSteam(newMsg);
-    pushToOutSteam(newMsg);
+//     /*** 🚨 Malicious Node Behavior ***/
 
-    // Send hello to everyone else
-    msg.message = "Message: Hello From " + std::to_string(id()) +
-                  ". Sent on round: " + std::to_string(getRound());
-    msg.aPeerId = std::to_string(id());
-    broadcast(msg);
-    broadcast(msg);
-    broadcast(msg);
+//     bool isMalicious;          // Flag to indicate if this node is an
+//     attacker void attemptDoubleSpend(); // Triggers a double-spend attack if
+//     possible bool isVictimOnline(int victimID); // Checks if the victim node
+//     is online void sendConflictingTransactions(int victimID
+//     ); // Sends two conflicting transactions
+//     void prioritizeOwnTransaction(
+//     ); // Ensures attacker's transaction propagates faster
+//     bool didAttackSucceed(
+//     ); // Checks if the attacker's double-spend transaction got confirmed
 
-    while (!inStreamEmpty()) {
-        Packet<ExampleMessage> newMsg = popInStream();
-        cout << endl
-             << std::to_string(id()) << " has receved a message from "
-             << newMsg.getMessage().aPeerId << endl;
-        cout << newMsg.getMessage().message << endl;
-    }
-    cout << endl;
-}
+//     /*** 💣 Finney Attack Functions ***/
 
-void ExamplePeer::endOfRound(const vector<Peer<ExampleMessage> *> &_peers) {
-    cout << "End of round " << getRound() << endl;
-}
+//     void mineTransactionPrivately(); // Mines a transaction in a private
+//     block void releasePrivateBlock(
+//     ); // Releases the private block after sending a conflicting transaction
+//     bool victimAcceptsUnconfirmedTx(
+//     ); // Simulates if the victim accepts an unconfirmed transaction
+//     void triggerFinneyAttack(int victimID
+//     ); // Executes a full Finney attack sequence
 
-ostream &ExamplePeer::printTo(ostream &out) const {
-    Peer<ExampleMessage>::printTo(out);
+//     /*** 🔥 Fork Tracking Functions ***/
 
-    out << id() << endl;
-    out << "counter:" << getRound() << endl;
+//     void detectForks();    // Detects if multiple valid chains exist
+//     void storeForkState(); // Keeps track of orphaned blocks for later
+//     analysis void resolveForkManually(
+//     ); // Allows for manual resolution of forks for research purposes
 
-    return out;
-}
+//     /*** 🛠 Malicious Node Chance Setup ***/
 
-ostream &operator<<(ostream &out, const ExamplePeer &peer) {
-    peer.printTo(out);
-    return out;
-}
-
-Simulation<quantas::ExampleMessage, quantas::ExamplePeer> *generateSim() {
-
-    Simulation<quantas::ExampleMessage, quantas::ExamplePeer> *sim =
-        new Simulation<quantas::ExampleMessage, quantas::ExamplePeer>;
-    return sim;
-}
-
-}; // namespace quantas
+//     void setMaliciousChance(int chance
+//     ); // Sets the chance for the node to be malicious
+//     void initializeMaliciousNode(
+//     ); // Initializes a node as malicious based on the chance
+// };
