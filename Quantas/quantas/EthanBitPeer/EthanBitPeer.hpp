@@ -77,7 +77,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     bitcoinTransaction findNextUnminedTransaction(
     ); // Finds next unmined transaction from the longest chain
 
-    /*** 🚨 Malicious Node Behavior ***/
+    /* Malicious Node Behavior */
 
     bool isMalicious;          // Flag to indicate if this node is an attacker
     void attemptDoubleSpend(); // Triggers a double-spend attack if possible
@@ -88,16 +88,6 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     ); // Ensures attacker's transaction propagates faster
     bool didAttackSucceed(
     ); // Checks if the attacker's double-spend transaction got confirmed
-
-    /*** 💣 Finney Attack Functions ***/
-
-    void mineTransactionPrivately(); // Mines a transaction in a private block
-    void releasePrivateBlock(
-    ); // Releases the private block after sending a conflicting transaction
-    bool victimAcceptsUnconfirmedTx(
-    ); // Simulates if the victim accepts an unconfirmed transaction
-    void triggerFinneyAttack(int victimID
-    ); // Executes a full Finney attack sequence
 
     /*** 🔥 Fork Tracking Functions ***/
 
