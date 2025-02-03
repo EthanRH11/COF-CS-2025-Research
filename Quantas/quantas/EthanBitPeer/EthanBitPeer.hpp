@@ -12,97 +12,87 @@ You should have received a copy of the GNU General Public License along with
 QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef EthanPeer_hpp
-#define EthanPeer_hpp
+#ifndef EthanBitPeer_hpp
+#define EthanBitPeer_hpp
 
 #include "../Common/Peer.hpp"
 #include "../Common/Simulation.hpp"
-#include <iostream>
-#include <string>
-#include <unordered_map>
+#include <mutex>
 #include <vector>
 
 namespace quantas {
 
 using std::mutex;
 using std::ostream;
-using std::string;
-using std::unordered_map;
 using std::vector;
 
+// Transaction Structure
 struct bitcoinTransaction {
-    int id = -1;             // the transaction id
-    int senderID = -1;       // ID of the sender
-    int recieverID = -1;     // ID of the reciever
-    int amount = 0;          // transaction amount
-    int submittedRound = -1; // round in which the transaction had been
-    bool confirmed = false;  // submitted
+    int id = -1;
+    int roundSubmitted = -1;
+    bool isMalicious = false; // Marks if transaction is malicious
 };
 
+// Block Structure
 struct bitcoinBlock {
-    int minerID = -1;                            // ID of the miner
-    vector<bitcoinTransaction> blockTransaction; // transaction on the block
-    int tipMiner = -1; // ID of miner who mined previous block
-    int parentBlockID = -1;
-    int length = 1;   // length of blockchain
-    int blockID = -1; // Unique Block ID
+    int minerID = -1;               // ID of peer who mined this block
+    bitcoinTransaction transaction; // Transaction included in the block
+    int parentBlockID = -1;         // Reference to parent (previous) block
+    int length = 1;                 // Chain length (longest chain rule)
+    bool isMalicious = false;       // Is block part of an attack
 };
 
+// Message Structure
 struct bitcoinMessage {
-    bitcoinBlock block; // whats being sent
-    bool mined = false; // decides if its a block or a message
+    bitcoinBlock block; // Block being sent
+    bool mined = false; // True if mined block, false if transaction
 };
 
 class EthanBitPeer : public Peer<bitcoinMessage> {
-  private:
-    bool isByzantine;                    // determines if the peer is malicious
-    vector<bitcoinBlock> blockChain;     // Main blockchain
-    vector<bitcoinBlock> unlinkedBlocks; // Blocks without known parents
-    unordered_map<int, bool> spentTransactions; // Spent transaction tracker
   public:
-    EthanBitPeer(long);
+    EthanBitPeer(long id);
     EthanBitPeer(const EthanBitPeer &rhs);
     ~EthanBitPeer();
 
-    /*** 🚀 General Blockchain Functions ***/
+    void performComp(); // Process transactions and mine blocks
+    void endOfRound(const vector<Peer<bitcoinMessage> *> &_peers
+    ); // Runs at end of each round
 
-    void checkIncomingMessages(); // Processes incoming blocks/transactions
-    void linkBlocks(); // Attempts to add unlinked blocks to the blockchain
-    bool shouldSubmitTransaction(
-    );                        // Checks if this node should submit a transaction
-    void submitTransaction(); // Creates a new transaction and broadcasts it
-    bool canMineBlock();      // Determines if this node can mine a block
-    void mineBlock(
-    ); // Mines the next transaction, adds to blockchain, and broadcasts it
-    bitcoinTransaction findNextUnminedTransaction(
-    ); // Finds next unmined transaction from the longest chain
+    void log() const { printTo(*_log); };
+    ostream &printTo(ostream &) const;
+    friend ostream &operator<<(ostream &, const EthanBitPeer &);
 
-    /* Malicious Node Behavior */
+    // Block Chain & Fork Tracks Functions
+    vector<vector<bitcoinBlock>> blockChains{
+        {vector<bitcoinBlock>{bitcoinBlock()}}
+    };
+    vector<bitcoinBlock> unlinkedBlocks;
+    vector<bitcoinBlock> transactions;
 
-    bool isMalicious;          // Flag to indicate if this node is an attacker
-    void attemptDoubleSpend(); // Triggers a double-spend attack if possible
-    bool isVictimOnline(int victimID); // Checks if the victim node is online
-    void sendConflictingTransactions(int victimID
-    ); // Sends two conflicting transactions
-    void prioritizeOwnTransaction(
-    ); // Ensures attacker's transaction propagates faster
-    bool didAttackSucceed(
-    ); // Checks if the attacker's double-spend transaction got confirmed
+    // Sim Params
+    int submitRate = 20;      // probability of submitting a transaction
+    int mineRate = 40;        // probability of mining a block
+    bool isMalicious = false; // True if this peer is attacking
 
-    /*** 🔥 Fork Tracking Functions ***/
+    // Transaction ID manage
+    static int currentTransactionID;
+    static mutex transactionMutex;
 
-    void detectForks();    // Detects if multiple valid chains exist
-    void storeForkState(); // Keeps track of orphaned blocks for later analysis
-    void resolveForkManually(
-    ); // Allows for manual resolution of forks for research purposes
+    // BlockChain Operations
+    void checkIncomingMessages(); // process messages
+    void linkBlocks();            // Connect unlinked blocks
+    bool checkSubmitTrans();      // Check if transaction should be submitted
+    void submitTrans();           // Broadcast a new transaction
+    bool checkMineBlock();        // check if mining is possible
+    void mineBlock();             // create and broadcast a new block
+    bitcoinBlock findNextTrans(); // Find an unmined transaction
 
-    /*** 🛠 Malicious Node Chance Setup ***/
-
-    void setMaliciousChance(int chance
-    ); // Sets the chance for the node to be malicious
-    void initializeMaliciousNode(
-    ); // Initializes a node as malicious based on the chance
+    // Attack sim
+    void attemptDoubleSpend(); // Malicious Peer
 };
 
+Simulation<bitcoinMessage, EthanBitPeer> *generateSim();
+
 } // namespace quantas
-#endif /* ExamplePeer_hpp */
+
+#endif // EthanPeer_HPP

@@ -12,67 +12,134 @@ You should have received a copy of the GNU General Public License along with
 QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "ExamplePeer.hpp"
+#include "EthanBitPeer.hpp"
+#include <iostream>
+#include <random>
 
 namespace quantas {
 
-// class EthanBitPeer : public Peer<bitcoinMessage> {
-//   private:
-//     bool isByzantine;                    // determines if the peer is
-//     malicious vector<bitcoinBlock> blockChain;     // Main blockchain
-//     vector<bitcoinBlock> unlinkedBlocks; // Blocks without known parents
-//     unordered_map<int, bool> spentTransactions; // Spent transaction tracker
-//   public:
-//     EthanBitPeer(long);
-//     EthanBitPeer(const EthanBitPeer &rhs);
-//     ~EthanBitPeer();
+using std::cout;
+using std::endl;
+using std::lock_guard;
+using std::mt19937;
+using std::mutex;
+using std::random_device;
+using std::uniform_int_distribution;
 
-//     /*** 🚀 General Blockchain Functions ***/
+int EthanBitPeer::currentTransactionID = 0;
+mutex EthanBitPeer::transactionMutex;
 
-//     void checkIncomingMessages(); // Processes incoming blocks/transactions
-//     void linkBlocks(); // Attempts to add unlinked blocks to the blockchain
-//     bool shouldSubmitTransaction(
-//     );                        // Checks if this node should submit a
-//     transaction void submitTransaction(); // Creates a new transaction and
-//     broadcasts it bool canMineBlock();      // Determines if this node can
-//     mine a block void mineBlock(
-//     ); // Mines the next transaction, adds to blockchain, and broadcasts it
-//     bitcoinTransaction findNextUnminedTransaction(
-//     ); // Finds next unmined transaction from the longest chain
+EthanBitPeer::EthanBitPeer(long id) : Peer(id) {}
 
-//     /*** 🚨 Malicious Node Behavior ***/
+EthanBitPeer::EthanBitPeer(const EthanBitPeer &rhs) : Peer(rhs) {}
 
-//     bool isMalicious;          // Flag to indicate if this node is an
-//     attacker void attemptDoubleSpend(); // Triggers a double-spend attack if
-//     possible bool isVictimOnline(int victimID); // Checks if the victim node
-//     is online void sendConflictingTransactions(int victimID
-//     ); // Sends two conflicting transactions
-//     void prioritizeOwnTransaction(
-//     ); // Ensures attacker's transaction propagates faster
-//     bool didAttackSucceed(
-//     ); // Checks if the attacker's double-spend transaction got confirmed
+EthanBitPeer::~EthanBitPeer() {}
 
-//     /*** 💣 Finney Attack Functions ***/
+void EthanBitPeer::performComp() {
+    checkIncomingMessages();
 
-//     void mineTransactionPrivately(); // Mines a transaction in a private
-//     block void releasePrivateBlock(
-//     ); // Releases the private block after sending a conflicting transaction
-//     bool victimAcceptsUnconfirmedTx(
-//     ); // Simulates if the victim accepts an unconfirmed transaction
-//     void triggerFinneyAttack(int victimID
-//     ); // Executes a full Finney attack sequence
+    if (checkSubmitTrans()) {
+        submitTrans();
+    }
+    if (checkMineBlock()) {
+        mineBlock();
+    }
+}
 
-//     /*** 🔥 Fork Tracking Functions ***/
+void EthanBitPeer::checkIncomingMessages() {
+    while (!messages.empty()) {
+        bitcoinMessage msg = messages.front();
+        messages.pop();
 
-//     void detectForks();    // Detects if multiple valid chains exist
-//     void storeForkState(); // Keeps track of orphaned blocks for later
-//     analysis void resolveForkManually(
-//     ); // Allows for manual resolution of forks for research purposes
+        if (msg.mined) {
+            unlinkedBlocks.push_back(msg.block);
+        } else {
+            transactions.push_back(msg.block);
+        }
+    }
+}
 
-//     /*** 🛠 Malicious Node Chance Setup ***/
+void EthanBitPeer::linkBlocks() {
+    for (auto it = unlinkedBlocks.begin(); it != unlinkedBlocks.end();) {
+        bool linked = false;
+        for (auto &chain : blockChains) {
+            if (!chain.empty() && chain.back().minerID == it->parentBlockID) {
+                chain.push_back(*it);
+                linked = true;
+                break;
+            }
+        }
+        if (linked) {
+            it = unlinkedBlocks.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
 
-//     void setMaliciousChance(int chance
-//     ); // Sets the chance for the node to be malicious
-//     void initializeMaliciousNode(
-//     ); // Initializes a node as malicious based on the chance
-// };
+bool EthanBitPeer::checkSubmitTrans() {
+    static mt19937 gen(random_device{}());
+    return uniform_int_distribution<>(0, 99)(gen) < submitRate;
+}
+
+void EthanBitPeer::submitTrans() {
+    lock_guard<mutex> lock(transactionMutex);
+    bitcoinTransaction tx{id++, roundSubmitted, isMalicious};
+    bitcoinBlock block{
+        id, tx, blockChains.front().back().minerID,
+        (int)blockChains.front().size(), isMalicious
+    };
+
+    bitcoinMessage msg{block, false};
+    broadcast(msg);
+}
+
+bool EthanBitPeer::checkMineBlock() {
+    static mt19937 gen(random_device{}());
+    return uniform_int_distribution<>(0, 99)(gen) < mineRate;
+}
+
+void EthanBitPeer::mineBlock() {
+    bitcoinBlock newBlock{
+        id, findNextTrans().trans, blockChains.front().back().minerId,
+        (int)blockChains.front().size() + 1, isMalicious
+    };
+    bitcoinMessage msg{newBlock, true};
+    broadcast(msg);
+}
+
+bitcoinBlock EthanBitPeer::findNextTrans() {
+    if (!transactions.empty()) {
+        bitcoinBlock blk = transactions.back();
+        transactions.pop_back();
+        return blk;
+    }
+    return bitcoinBlock();
+}
+
+void EthanBitPeer::attemptDoubleSpend() {
+    if (tranaction.size() >= 2) {
+        bitcoinTransaction maliciousTx = transactions.back().trans;
+        maliciousTx.isMalicious = true;
+        bitcoinBlock maliciousBlock{
+            id, maliciousTx, blockChains.front().back().minerID,
+            (int)blockChains.front().size() + 1, true
+        };
+        bitcoinMessage msg{maliciousBlock, true};
+        broadcast(msg);
+    }
+}
+
+ostream &EthanBitPeer::printTo(ostream &os) const {
+    os << "Peer ID: " << id << " | Blocks: " << blockChains.front().size();
+    return os;
+}
+
+ostream &operator<<(ostream &os, const EthanBitPeer &peer) {
+    return peer.printTo(os);
+}
+
+Simulation<bitcoinMessage, EthanBitPeer> *generateSim() {
+    return new Simulation<bitcoinMessage, EthanBitPeer>();
+}
+} // namespace quantas
