@@ -47,9 +47,9 @@ void EthanBitPeer::performComp() {
 }
 
 void EthanBitPeer::checkIncomingMessages() {
-    while (!messages.empty()) {
-        bitcoinMessage msg = messages.front();
-        messages.pop();
+    while (!inStreamEmpty()) {
+        Packet<bitcoinMessage> newMsg = popInStream();
+        bitcoinMessage msg = newMsg.getMessage(); // extract actual message
 
         if (msg.mined) {
             unlinkedBlocks.push_back(msg.block);
@@ -58,7 +58,6 @@ void EthanBitPeer::checkIncomingMessages() {
         }
     }
 }
-
 void EthanBitPeer::linkBlocks() {
     for (auto it = unlinkedBlocks.begin(); it != unlinkedBlocks.end();) {
         bool linked = false;
@@ -84,11 +83,14 @@ bool EthanBitPeer::checkSubmitTrans() {
 
 void EthanBitPeer::submitTrans() {
     lock_guard<mutex> lock(transactionMutex);
-    bitcoinTransaction tx{id++, roundSubmitted, isMalicious};
-    bitcoinBlock block{
-        id, tx, blockChains.front().back().minerID,
-        (int)blockChains.front().size(), isMalicious
-    };
+
+    bitcoinTransaction tx{currentTransactionID++, getRound(), isMalicious};
+
+    int parentBlockID =
+        blockChains.empty() ? -1 : blockChains.front().back().minerID;
+    int chainLength = blockChains.empty() ? 1 : blockChains.front().size() + 1;
+
+    bitcoinBlock block{minerID, tx, parentBlockID, chainLength, isMalicious};
 
     bitcoinMessage msg{block, false};
     broadcast(msg);
@@ -118,7 +120,7 @@ bitcoinBlock EthanBitPeer::findNextTrans() {
 }
 
 void EthanBitPeer::attemptDoubleSpend() {
-    if (tranaction.size() >= 2) {
+    if (transaction.size() >= 2) {
         bitcoinTransaction maliciousTx = transactions.back().trans;
         maliciousTx.isMalicious = true;
         bitcoinBlock maliciousBlock{
