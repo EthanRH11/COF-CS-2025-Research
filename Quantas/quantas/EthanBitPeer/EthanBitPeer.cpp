@@ -90,7 +90,7 @@ void EthanBitPeer::submitTrans() {
         blockChains.empty() ? -1 : blockChains.front().back().minerID;
     int chainLength = blockChains.empty() ? 1 : blockChains.front().size() + 1;
 
-    bitcoinBlock block{minerID, tx, parentBlockID, chainLength, isMalicious};
+    bitcoinBlock block{id(), tx, parentBlockID, chainLength, isMalicious};
 
     bitcoinMessage msg{block, false};
     broadcast(msg);
@@ -103,7 +103,7 @@ bool EthanBitPeer::checkMineBlock() {
 
 void EthanBitPeer::mineBlock() {
     bitcoinBlock newBlock{
-        id, findNextTrans().trans, blockChains.front().back().minerId,
+        id(), findNextTrans().transaction, blockChains.front().back().minerID,
         (int)blockChains.front().size() + 1, isMalicious
     };
     bitcoinMessage msg{newBlock, true};
@@ -120,11 +120,11 @@ bitcoinBlock EthanBitPeer::findNextTrans() {
 }
 
 void EthanBitPeer::attemptDoubleSpend() {
-    if (transaction.size() >= 2) {
-        bitcoinTransaction maliciousTx = transactions.back().trans;
+    if (transactions.size() >= 2) {
+        bitcoinTransaction maliciousTx = transactions.back().transaction;
         maliciousTx.isMalicious = true;
         bitcoinBlock maliciousBlock{
-            id, maliciousTx, blockChains.front().back().minerID,
+            id(), maliciousTx, blockChains.front().back().minerID,
             (int)blockChains.front().size() + 1, true
         };
         bitcoinMessage msg{maliciousBlock, true};
