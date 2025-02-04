@@ -35,7 +35,26 @@ EthanBitPeer::EthanBitPeer(const EthanBitPeer &rhs) : Peer(rhs) {}
 
 EthanBitPeer::~EthanBitPeer() {}
 
-void EthanBitPeer::performComp() {
+void quantas::EthanBitPeer::endOfRound(
+    const vector<Peer<bitcoinMessage> *> &_peers
+) {
+    std::vector<EthanBitPeer *> peers;
+    for (auto peer : _peers) {
+        peers.push_back(static_cast<EthanBitPeer *>(peer));
+    }
+
+    // Find the peer with the shortest blockchain
+    int minLength = peers[0]->blockChains.size();
+    int minIndex = 0;
+    for (size_t i = 1; i < peers.size(); i++) {
+        if (peers[i]->blockChains.size() < minLength) {
+            minLength = peers[i]->blockChains.size();
+            minIndex = static_cast<int>(i);
+        }
+    }
+}
+
+void EthanBitPeer::performComputation() {
     checkIncomingMessages();
 
     if (checkSubmitTrans()) {
@@ -133,7 +152,7 @@ void EthanBitPeer::attemptDoubleSpend() {
 }
 
 ostream &EthanBitPeer::printTo(ostream &os) const {
-    os << "Peer ID: " << id << " | Blocks: " << blockChains.front().size();
+    os << "Peer ID: " << id() << " | Blocks: " << blockChains.front().size();
     return os;
 }
 

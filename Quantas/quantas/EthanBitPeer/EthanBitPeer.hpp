@@ -28,14 +28,14 @@ using std::vector;
 
 // Transaction Structure
 struct bitcoinTransaction {
-    int id = -1;
+    long int id = -1;
     int roundSubmitted = -1;
     bool isMalicious = false; // Marks if transaction is malicious
 };
 
 // Block Structure
 struct bitcoinBlock {
-    int minerID = -1;               // ID of peer who mined this block
+    long int minerID = -1;          // ID of peer who mined this block
     bitcoinTransaction transaction; // Transaction included in the block
     int parentBlockID = -1;         // Reference to parent (previous) block
     int length = 1;                 // Chain length (longest chain rule)
@@ -54,7 +54,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     EthanBitPeer(const EthanBitPeer &rhs);
     ~EthanBitPeer();
 
-    void performComp(); // Process transactions and mine blocks
+    void performComputation(); // Process transactions and mine blocks
     void endOfRound(const vector<Peer<bitcoinMessage> *> &_peers
     ); // Runs at end of each round
 
