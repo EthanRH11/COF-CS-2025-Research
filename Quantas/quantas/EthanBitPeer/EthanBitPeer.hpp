@@ -18,6 +18,7 @@ QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 #include "../Common/Peer.hpp"
 #include "../Common/Simulation.hpp"
 #include <mutex>
+#include <unordered_set>
 #include <vector>
 
 namespace quantas {
@@ -71,8 +72,11 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
 
     // Sim Params
     int submitRate = 20;      // probability of submitting a transaction
-    int mineRate = 40;        // probability of mining a block
+    int mineRate = 20;        // probability of mining a block
     bool isMalicious = false; // True if this peer is attacking
+    int messagesSent = 0;
+    static std::unordered_set<int>
+        minedTransactionIDs; // track mined transactions
 
     // Transaction ID manage
     static int currentTransactionID;
@@ -88,7 +92,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     bitcoinBlock findNextTrans(); // Find an unmined transaction
 
     // Attack sim
-    void attemptDoubleSpend(); // Malicious Peer
+    // void attemptDoubleSpend(); // Malicious Peer
 };
 
 Simulation<bitcoinMessage, EthanBitPeer> *generateSim();

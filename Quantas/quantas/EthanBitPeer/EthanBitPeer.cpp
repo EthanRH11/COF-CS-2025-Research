@@ -26,6 +26,8 @@ using std::mutex;
 using std::random_device;
 using std::uniform_int_distribution;
 
+std::unordered_set<int> quantas::EthanBitPeer::minedTransactionIDs;
+
 int EthanBitPeer::currentTransactionID = 0;
 mutex EthanBitPeer::transactionMutex;
 
@@ -43,15 +45,24 @@ void quantas::EthanBitPeer::endOfRound(
         peers.push_back(static_cast<EthanBitPeer *>(peer));
     }
 
-    // Find the peer with the shortest blockchain
-    int minLength = peers[0]->blockChains.size();
-    int minIndex = 0;
-    for (size_t i = 1; i < peers.size(); i++) {
-        if (peers[i]->blockChains.size() < minLength) {
-            minLength = peers[i]->blockChains.size();
-            minIndex = static_cast<int>(i);
+    // Find the peer with the longest blockchain
+    int maxLength = 0;
+    for (size_t i = 0; i < peers.size(); i++) {
+        if (!peers[i]->blockChains.empty() &&
+            peers[i]->blockChains.front().size() > maxLength) {
+            maxLength = peers[i]->blockChains.front().size();
         }
     }
+
+    LogWriter::getTestLog()["blockChain_length"].push_back(maxLength);
+
+    LogWriter::getTestLog()["forks"].push_back(0);
+
+    int totalMessagesSent = 0;
+    for (size_t i = 1; i < peers.size(); i++) {
+        totalMessagesSent += peers[i]->messagesSent;
+    }
+    LogWriter::getTestLog()["totalMessagesSent"].push_back(totalMessagesSent);
 }
 
 void EthanBitPeer::performComputation() {
@@ -87,6 +98,11 @@ void EthanBitPeer::linkBlocks() {
                 break;
             }
         }
+        if (!linked && blockChains.empty()) {
+            // If no chains exist, create a new chain with this block
+            blockChains.push_back({*it});
+            linked = true;
+        }
         if (linked) {
             it = unlinkedBlocks.erase(it);
         } else {
@@ -95,60 +111,92 @@ void EthanBitPeer::linkBlocks() {
     }
 }
 
-bool EthanBitPeer::checkSubmitTrans() {
-    static mt19937 gen(random_device{}());
-    return uniform_int_distribution<>(0, 99)(gen) < submitRate;
-}
+bool EthanBitPeer::checkSubmitTrans() { return randMod(100) < submitRate; }
 
 void EthanBitPeer::submitTrans() {
     lock_guard<mutex> lock(transactionMutex);
 
     bitcoinTransaction tx{currentTransactionID++, getRound(), isMalicious};
 
-    int parentBlockID =
-        blockChains.empty() ? -1 : blockChains.front().back().minerID;
-    int chainLength = blockChains.empty() ? 1 : blockChains.front().size() + 1;
+    // Prevent duplicate transactions
+    if (minedTransactionIDs.count(tx.id) > 0) {
+        // cout << "Duplicate transaction detected: " << tx.id << endl;
+        return;
+    }
+
+    minedTransactionIDs.insert(tx.id); // Mark as mined
+
+    int parentBlockID = -1; // Default for genesis block
+    int chainLength = 1;    // Default for genesis block
+
+    if (!blockChains.empty() && !blockChains.front().empty()) {
+        parentBlockID = blockChains.front().back().minerID;
+        chainLength = blockChains.front().size() + 1;
+    }
 
     bitcoinBlock block{id(), tx, parentBlockID, chainLength, isMalicious};
 
     bitcoinMessage msg{block, false};
+    messagesSent += neighbors().size();
     broadcast(msg);
 }
 
 bool EthanBitPeer::checkMineBlock() {
-    static mt19937 gen(random_device{}());
-    return uniform_int_distribution<>(0, 99)(gen) < mineRate;
+    int randVal = randMod(100);
+    // cout << "Mine check: " << randVal << " < " << mineRate << endl;
+    return randVal < mineRate;
+    // return randMod(100) < mineRate;
 }
 
 void EthanBitPeer::mineBlock() {
-    bitcoinBlock newBlock{
-        id(), findNextTrans().transaction, blockChains.front().back().minerID,
-        (int)blockChains.front().size() + 1, isMalicious
-    };
+    // cout << "Attempting to mine block..." << endl;
+
+    bitcoinBlock newBlock = findNextTrans();
+
+    // Ensure a valid transaction exists before mining
+    if (newBlock.transaction.id == 0) {
+        // cout << "No valid transaction for mining!" << endl;
+        return;
+    }
+
+    // Assign correct parentBlockID and length
+    int parentBlockID = -1; // Default for genesis block
+    int chainLength = 1;    // Default for genesis block
+
+    if (!blockChains.empty() && !blockChains.front().empty()) {
+        parentBlockID = blockChains.front().back().minerID;
+        chainLength = blockChains.front().size() + 1;
+    }
+
+    newBlock.parentBlockID = parentBlockID;
+    newBlock.length = chainLength;
+
+    // Add mined block to blockchain
+    if (blockChains.empty()) {
+        blockChains.push_back({newBlock});
+    } else {
+        blockChains.front().push_back(newBlock);
+    }
+
+    // cout << "Mined block with transaction ID: " << newBlock.transaction.id
+    //      << ", New blockchain length: " << blockChains.front().size() <<
+    //      endl;
+
+    // Broadcast mined block
     bitcoinMessage msg{newBlock, true};
+    messagesSent += neighbors().size();
     broadcast(msg);
 }
 
 bitcoinBlock EthanBitPeer::findNextTrans() {
+    // std::cout << "Transactions available: " << transactions.size() << endl;
     if (!transactions.empty()) {
         bitcoinBlock blk = transactions.back();
         transactions.pop_back();
         return blk;
     }
+    // cout << "No transactions found!" << endl;
     return bitcoinBlock();
-}
-
-void EthanBitPeer::attemptDoubleSpend() {
-    if (transactions.size() >= 2) {
-        bitcoinTransaction maliciousTx = transactions.back().transaction;
-        maliciousTx.isMalicious = true;
-        bitcoinBlock maliciousBlock{
-            id(), maliciousTx, blockChains.front().back().minerID,
-            (int)blockChains.front().size() + 1, true
-        };
-        bitcoinMessage msg{maliciousBlock, true};
-        broadcast(msg);
-    }
 }
 
 ostream &EthanBitPeer::printTo(ostream &os) const {
