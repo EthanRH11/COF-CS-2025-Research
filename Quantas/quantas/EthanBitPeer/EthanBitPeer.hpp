@@ -75,6 +75,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     int mineRate = 20;        // probability of mining a block
     bool isMalicious = false; // True if this peer is attacking
     int messagesSent = 0;
+    int forkCount = 0;
     static std::unordered_set<int>
         minedTransactionIDs; // track mined transactions
 
@@ -90,6 +91,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     bool checkMineBlock();        // check if mining is possible
     void mineBlock();             // create and broadcast a new block
     bitcoinBlock findNextTrans(); // Find an unmined transaction
+    void resolveForks();
 
     // Attack sim
     // void attemptDoubleSpend(); // Malicious Peer
