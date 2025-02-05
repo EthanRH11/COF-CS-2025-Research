@@ -2,16 +2,16 @@
   "experiments": [
     {
       "algorithm": "EthanBitPeer",
-      "logFile": "Delay1.txt",
+      "logFile": "Delay10.txt",
       "threadCount": 1,
       "distribution": {
         "type": "uniform",
-        "maxDelay": 1
+        "maxDelay": 10
       },
       "topology": {
         "type": "complete",
-        "initialPeers": 10,
-        "totalPeers": 10,
+        "initialPeers": 100,
+        "totalPeers": 100,
         "maxMsgsRec": 1
       },
       "tests": 1,
@@ -19,16 +19,67 @@
     },
     {
       "algorithm": "EthanBitPeer",
-      "logFile": "Delay2.txt",
+      "logFile": "Delay50.txt",
       "threadCount": 1,
       "distribution": {
         "type": "uniform",
-        "maxDelay": 2
+        "maxDelay": 50
       },
       "topology": {
         "type": "complete",
-        "initialPeers": 10,
-        "totalPeers": 10,
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay100.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 100
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay150.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 150
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay200.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 200
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
         "maxMsgsRec": 1
       },
       "tests": 1,

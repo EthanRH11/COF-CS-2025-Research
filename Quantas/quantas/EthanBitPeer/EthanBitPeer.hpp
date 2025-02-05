@@ -71,11 +71,12 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     vector<bitcoinBlock> transactions;
 
     // Sim Params
-    int submitRate = 20;      // probability of submitting a transaction
-    int mineRate = 20;        // probability of mining a block
+    int submitRate = 10;      // probability of submitting a transaction
+    int mineRate = 10;        // probability of mining a block
     bool isMalicious = false; // True if this peer is attacking
     int messagesSent = 0;
     int forkCount = 0;
+    int totalForkCount = 0;
     static std::unordered_set<int>
         minedTransactionIDs; // track mined transactions
 
