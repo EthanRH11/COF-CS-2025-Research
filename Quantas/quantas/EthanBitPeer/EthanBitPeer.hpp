@@ -1,3 +1,109 @@
+// /*
+// Copyright 2022
+
+// This file is part of QUANTAS.
+// QUANTAS is free software: you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version. QUANTAS is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+// FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+// details. You should have received a copy of the GNU General Public License
+// along with QUANTAS. If not, see <https://www.gnu.org/licenses/>.
+// */
+
+// #ifndef EthanBitPeer_hpp
+// #define EthanBitPeer_hpp
+
+// #include "../Common/Peer.hpp"
+// #include "../Common/Simulation.hpp"
+// #include <mutex>
+// #include <unordered_set>
+// #include <vector>
+
+// namespace quantas {
+
+// using std::mutex;
+// using std::ostream;
+// using std::vector;
+
+// // Transaction Structure
+// struct bitcoinTransaction {
+//     long int id = -1;
+//     int roundSubmitted = -1;
+//     bool isMalicious = false; // Marks if transaction is malicious
+// };
+
+// // Block Structure
+// struct bitcoinBlock {
+//     long int minerID = -1;          // ID of peer who mined this block
+//     bitcoinTransaction transaction; // Transaction included in the block
+//     int parentBlockID = -1;         // Reference to parent (previous) block
+//     int length = 1;                 // Chain length (longest chain rule)
+//     bool isMalicious = false;       // Is block part of an attack
+// };
+
+// // Message Structure
+// struct bitcoinMessage {
+//     bitcoinBlock block; // Block being sent
+//     bool mined = false; // True if mined block, false if transaction
+// };
+
+// class EthanBitPeer : public Peer<bitcoinMessage> {
+//   public:
+//     EthanBitPeer(long id);
+//     EthanBitPeer(const EthanBitPeer &rhs);
+//     ~EthanBitPeer();
+
+//     void performComputation(); // Process transactions and mine blocks
+//     void endOfRound(const vector<Peer<bitcoinMessage> *> &_peers
+//     ); // Runs at end of each round
+
+//     void log() const { printTo(*_log); };
+//     ostream &printTo(ostream &) const;
+//     friend ostream &operator<<(ostream &, const EthanBitPeer &);
+
+//     // Block Chain & Fork Tracks Functions
+//     vector<vector<bitcoinBlock>> blockChains{
+//         {vector<bitcoinBlock>{bitcoinBlock()}}
+//     };
+//     vector<bitcoinBlock> unlinkedBlocks;
+//     vector<bitcoinBlock> transactions;
+
+//     // Sim Params
+//     int submitRate = 10;      // probability of submitting a transaction
+//     int mineRate = 10;        // probability of mining a block
+//     bool isMalicious = false; // True if this peer is attacking
+//     int messagesSent = 0;
+//     int forkCount = 0;
+//     int totalForkCount = 0;
+//     static std::unordered_set<int>
+//         minedTransactionIDs; // track mined transactions
+
+//     // Transaction ID manage
+//     static int currentTransactionID;
+//     static mutex transactionMutex;
+
+//     // BlockChain Operations
+//     void checkIncomingMessages(); // process messages
+//     void linkBlocks();            // Connect unlinked blocks
+//     bool checkSubmitTrans();      // Check if transaction should be submitted
+//     void submitTrans();           // Broadcast a new transaction
+//     bool checkMineBlock();        // check if mining is possible
+//     void mineBlock();             // create and broadcast a new block
+//     bitcoinBlock findNextTrans(); // Find an unmined transaction
+//     void resolveForks();
+
+//     // Attack sim
+//     // void attemptDoubleSpend(); // Malicious Peer
+// };
+
+// Simulation<bitcoinMessage, EthanBitPeer> *generateSim();
+
+// } // namespace quantas
+
+// #endif // EthanPeer_HPP
+
 /*
 Copyright 2022
 
@@ -12,12 +118,13 @@ You should have received a copy of the GNU General Public License along with
 QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef EthanBitPeer_hpp
-#define EthanBitPeer_hpp
+#ifndef ETHANBITPEER_HPP
+#define ETHANBITPEER_HPP
 
 #include "../Common/Peer.hpp"
 #include "../Common/Simulation.hpp"
 #include <mutex>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -25,12 +132,14 @@ namespace quantas {
 
 using std::mutex;
 using std::ostream;
+using std::unordered_map;
+using std::unordered_set;
 using std::vector;
 
 // Transaction Structure
 struct bitcoinTransaction {
-    long int id = -1;
-    int roundSubmitted = -1;
+    long int id = -1;         // Transaction ID
+    int roundSubmitted = -1;  // Round when the transaction was submitted
     bool isMalicious = false; // Marks if transaction is malicious
 };
 
@@ -39,7 +148,7 @@ struct bitcoinBlock {
     long int minerID = -1;          // ID of peer who mined this block
     bitcoinTransaction transaction; // Transaction included in the block
     int parentBlockID = -1;         // Reference to parent (previous) block
-    int length = 1;                 // Chain length (longest chain rule)
+    int height = 1;                 // Height of the block in the chain
     bool isMalicious = false;       // Is block part of an attack
 };
 
@@ -63,43 +172,43 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     ostream &printTo(ostream &) const;
     friend ostream &operator<<(ostream &, const EthanBitPeer &);
 
-    // Block Chain & Fork Tracks Functions
-    vector<vector<bitcoinBlock>> blockChains{
-        {vector<bitcoinBlock>{bitcoinBlock()}}
-    };
+    // Blockchain Data Structure
+    unordered_map<int, bitcoinBlock> blockchain; // Key: block ID, Value: Block
+    vector<int> longestChain; // Stores the IDs of blocks in the longest chain
+
+    // Unlinked blocks and transactions
     vector<bitcoinBlock> unlinkedBlocks;
     vector<bitcoinBlock> transactions;
 
     // Sim Params
-    int submitRate = 10;      // probability of submitting a transaction
-    int mineRate = 10;        // probability of mining a block
+    int submitRate = 10;      // Probability of submitting a transaction
+    int mineRate = 10;        // Probability of mining a block
     bool isMalicious = false; // True if this peer is attacking
-    int messagesSent = 0;
-    int forkCount = 0;
-    int totalForkCount = 0;
-    static std::unordered_set<int>
-        minedTransactionIDs; // track mined transactions
+    int messagesSent = 0;     // Track messages sent
+    int forkCount = 0;        // Track forks in the current round
+    int totalForkCount = 0;   // Track total forks
 
-    // Transaction ID manage
+    // Transaction ID management
     static int currentTransactionID;
     static mutex transactionMutex;
 
-    // BlockChain Operations
-    void checkIncomingMessages(); // process messages
-    void linkBlocks();            // Connect unlinked blocks
+    // Blockchain Operations
+    void checkIncomingMessages(); // Process incoming messages
     bool checkSubmitTrans();      // Check if transaction should be submitted
     void submitTrans();           // Broadcast a new transaction
-    bool checkMineBlock();        // check if mining is possible
-    void mineBlock();             // create and broadcast a new block
+    bool checkMineBlock();        // Check if mining is possible
+    void mineBlock();             // Create and broadcast a new block
     bitcoinBlock findNextTrans(); // Find an unmined transaction
-    void resolveForks();
+    void resolveForks(); // Resolve forks by selecting the longest chain
 
-    // Attack sim
-    // void attemptDoubleSpend(); // Malicious Peer
+    // Helper Functions
+    int generateBlockID(); // Generate a unique block ID
+    vector<int> getChain(int blockID
+    ) const; // Get the full chain for a given block
 };
 
 Simulation<bitcoinMessage, EthanBitPeer> *generateSim();
 
 } // namespace quantas
 
-#endif // EthanPeer_HPP
+#endif // ETHANBITPEER_HPP

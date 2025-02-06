@@ -13,8 +13,11 @@ QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "EthanBitPeer.hpp"
+#include <algorithm>
 #include <iostream>
 #include <random>
+#include <unordered_map>
+#include <vector>
 
 namespace quantas {
 
@@ -26,8 +29,6 @@ using std::mutex;
 using std::random_device;
 using std::uniform_int_distribution;
 
-std::unordered_set<int> quantas::EthanBitPeer::minedTransactionIDs;
-
 int EthanBitPeer::currentTransactionID = 0;
 mutex EthanBitPeer::transactionMutex;
 
@@ -37,9 +38,7 @@ EthanBitPeer::EthanBitPeer(const EthanBitPeer &rhs) : Peer(rhs) {}
 
 EthanBitPeer::~EthanBitPeer() {}
 
-void quantas::EthanBitPeer::endOfRound(
-    const vector<Peer<bitcoinMessage> *> &_peers
-) {
+void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
     std::vector<EthanBitPeer *> peers;
     for (auto peer : _peers) {
         peers.push_back(static_cast<EthanBitPeer *>(peer));
@@ -50,36 +49,22 @@ void quantas::EthanBitPeer::endOfRound(
     int roundForkCount = 0;
 
     std::unordered_map<int, std::unordered_set<int>> heightToBlocks;
-    // Maps blockchain height to a set of unique block IDs
 
     // Iterate through peers to track blockchain stats
     for (auto *peer : peers) {
-        if (!peer->blockChains.empty()) {
-            int longestChainSize = 0;
+        if (!peer->blockchain.empty()) {
+            int longestChainSize = peer->longestChain.size();
+            totalMinedBlocks += longestChainSize;
 
-            // Find the longest chain for this peer
-            for (const auto &chain : peer->blockChains) {
-                int chainSize = chain.size();
-                if (chainSize > longestChainSize) {
-                    longestChainSize = chainSize;
-                }
-            }
-
-            totalMinedBlocks +=
-                longestChainSize; // Track mined blocks correctly
-
-            // Ensure we track the longest blockchain seen across all peers
             if (longestChainSize > maxLength) {
                 maxLength = longestChainSize;
             }
 
             // Fork detection: Track unique blocks per height
-            for (auto &chain : peer->blockChains) {
-                if (!chain.empty()) {
-                    int lastBlockHeight = chain.size();
-                    int lastBlockID = chain.back().minerID;
-                    heightToBlocks[lastBlockHeight].insert(lastBlockID);
-                }
+            for (const auto &entry : peer->blockchain) {
+                int blockHeight = entry.second.height;
+                int blockID = entry.first;
+                heightToBlocks[blockHeight].insert(blockID);
             }
         }
     }
@@ -88,16 +73,14 @@ void quantas::EthanBitPeer::endOfRound(
     // height
     for (const auto &entry : heightToBlocks) {
         if (entry.second.size() > 1) {
-            roundForkCount += entry.second.size() - 1; // Count extra
+            roundForkCount += entry.second.size() - 1;
         }
     }
 
     // Logging fork count and mined blocks
-    LogWriter::getTestLog()["minedBlocksMinusLongestChain"].push_back(
-        totalMinedBlocks - maxLength
-    );
+    LogWriter::getTestLog()["Forks"].push_back(totalMinedBlocks - maxLength);
     LogWriter::getTestLog()["blockChain_length"].push_back(maxLength);
-    LogWriter::getTestLog()["forks"].push_back(roundForkCount);
+    // LogWriter::getTestLog()["forks"].push_back(roundForkCount);
 
     // // Debugging output
     // std::cout << "Total Mined Blocks: " << totalMinedBlocks << "\n";
@@ -121,34 +104,30 @@ void EthanBitPeer::performComputation() {
 void EthanBitPeer::checkIncomingMessages() {
     while (!inStreamEmpty()) {
         Packet<bitcoinMessage> newMsg = popInStream();
-        bitcoinMessage msg = newMsg.getMessage(); // extract actual message
+        bitcoinMessage msg = newMsg.getMessage();
 
         if (msg.mined) {
-            unlinkedBlocks.push_back(msg.block);
+            bitcoinBlock newBlock = msg.block;
+            int newBlockID = generateBlockID();
+
+            // Check if the new block creates a fork
+            bool forkDetected = false;
+            for (const auto &entry : blockchain) {
+                if (entry.second.parentBlockID == newBlock.parentBlockID) {
+                    forkDetected = true;
+                    break;
+                }
+            }
+
+            // Add the new block to the blockchain
+            blockchain[newBlockID] = newBlock;
+
+            // Resolve forks if necessary
+            if (forkDetected) {
+                resolveForks();
+            }
         } else {
             transactions.push_back(msg.block);
-        }
-    }
-}
-void EthanBitPeer::linkBlocks() {
-    for (auto it = unlinkedBlocks.begin(); it != unlinkedBlocks.end();) {
-        bool linked = false;
-        for (auto &chain : blockChains) {
-            if (!chain.empty() && chain.back().minerID == it->parentBlockID) {
-                chain.push_back(*it);
-                linked = true;
-                break;
-            }
-        }
-        if (!linked && blockChains.empty()) {
-            // If no chains exist, create a new chain with this block
-            blockChains.push_back({*it});
-            linked = true;
-        }
-        if (linked) {
-            it = unlinkedBlocks.erase(it);
-        } else {
-            ++it;
         }
     }
 }
@@ -160,20 +139,12 @@ void EthanBitPeer::submitTrans() {
 
     bitcoinTransaction tx{currentTransactionID++, getRound(), isMalicious};
 
-    // Prevent duplicate transactions
-    if (minedTransactionIDs.count(tx.id) > 0) {
-        // cout << "Duplicate transaction detected: " << tx.id << endl;
-        return;
-    }
-
-    minedTransactionIDs.insert(tx.id); // Mark as mined
-
     int parentBlockID = -1; // Default for genesis block
     int chainLength = 1;    // Default for genesis block
 
-    if (!blockChains.empty() && !blockChains.front().empty()) {
-        parentBlockID = blockChains.front().back().minerID;
-        chainLength = blockChains.front().size() + 1;
+    if (!longestChain.empty()) {
+        parentBlockID = longestChain.back();
+        chainLength = blockchain[parentBlockID].height + 1;
     }
 
     bitcoinBlock block{id(), tx, parentBlockID, chainLength, isMalicious};
@@ -183,101 +154,33 @@ void EthanBitPeer::submitTrans() {
     broadcast(msg);
 }
 
-bool EthanBitPeer::checkMineBlock() {
-    int randVal = randMod(100);
-    // cout << "Mine check: " << randVal << " < " << mineRate << endl;
-    return randVal < mineRate;
-    // return randMod(100) < mineRate;
-}
-
-// void EthanBitPeer::mineBlock() {
-//     bitcoinBlock newBlock = findNextTrans();
-
-//     // Ensure a valid transaction exists before mining
-//     if (newBlock.transaction.id == 0) {
-//         return;
-//     }
-
-//     // Check for a fork condition: multiple blocks with the same parent
-//     int parentBlockID = -1; // Default for genesis block
-//     int chainLength = 1;    // Default for genesis block
-
-//     if (!blockChains.empty() && !blockChains.front().empty()) {
-//         parentBlockID = blockChains.front().back().minerID;
-//         chainLength = blockChains.front().size() + 1;
-//     }
-//     bool forkDetected = false;
-//     // Check if a block with the same parent exists already
-//     for (auto &chain : blockChains) {
-//         if (!chain.empty() && chain.back().minerID == parentBlockID) {
-//             // A fork detected, increment fork count
-//             forkDetected = true;
-//             forkCount++;
-//             break;
-//         }
-//     }
-
-//     // Add the new block to the blockchain (it may still create a valid
-//     chain) newBlock.parentBlockID = parentBlockID; newBlock.length =
-//     chainLength;
-
-//     if (blockChains.empty()) {
-//         blockChains.push_back({newBlock});
-//     } else {
-//         blockChains.front().push_back(newBlock);
-//     }
-
-//     // Broadcast the new block
-//     bitcoinMessage msg{newBlock, true};
-//     messagesSent += neighbors().size();
-//     broadcast(msg);
-// }
+bool EthanBitPeer::checkMineBlock() { return randMod(100) < mineRate; }
 
 void EthanBitPeer::mineBlock() {
-    bitcoinBlock newBlock = findNextTrans();
-
-    if (newBlock.transaction.id == 0) {
-        return;
+    if (transactions.empty()) {
+        std::cout << "No transactions to mine" << std::endl;
+        return; // No transactions to mine
     }
 
-    int parentBlockID = -1;
-    int chainLength = 1;
+    // Create a new block
+    bitcoinBlock newBlock;
+    newBlock.minerID = id();
+    newBlock.transaction = transactions.back().transaction;
+    newBlock.parentBlockID = longestChain.empty() ? -1 : longestChain.back();
+    newBlock.height = longestChain.empty()
+                          ? 1
+                          : blockchain[newBlock.parentBlockID].height + 1;
 
-    // Ensure there is at least one chain to find the parent block
-    if (!blockChains.empty() && !blockChains.front().empty()) {
-        parentBlockID =
-            blockChains.front().back().minerID; // Assuming the first chain
-        chainLength = blockChains.front().size() + 1;
-    }
+    std::cout << "Mined new block: ID = " << generateBlockID()
+              << ", ParentID = " << newBlock.parentBlockID
+              << ", Height = " << newBlock.height << std::endl;
 
-    bool forkDetected = false;
+    // Add the new block to the blockchain
+    int newBlockID = generateBlockID();
+    blockchain[newBlockID] = newBlock;
 
-    // Check if this block creates a fork by checking if the parent block
-    // already exists in any chain
-    for (auto &chain : blockChains) {
-        if (!chain.empty() && chain.back().minerID == parentBlockID) {
-            // Fork detected, increment fork count
-            forkDetected = true;
-            break;
-        }
-    }
-
-    // Add the new block to the chain
-    newBlock.parentBlockID = parentBlockID;
-    newBlock.length = chainLength;
-
-    if (forkDetected) {
-        // Add this block to a new chain (indicating a fork)
-        blockChains.push_back({newBlock});
-        forkCount++; // Increment fork count for this round
-    } else {
-        // No fork detected, add to the main chain
-        if (blockChains.empty()) {
-            blockChains.push_back({newBlock});
-        } else {
-            blockChains.front().push_back(newBlock);
-        }
-    }
+    // Update the longest chain
+    longestChain.push_back(newBlockID);
 
     // Broadcast the new block
     bitcoinMessage msg{newBlock, true};
@@ -285,70 +188,98 @@ void EthanBitPeer::mineBlock() {
     broadcast(msg);
 }
 
-bitcoinBlock EthanBitPeer::findNextTrans() {
-    // std::cout << "Transactions available: " << transactions.size() << endl;
-    if (!transactions.empty()) {
-        bitcoinBlock blk = transactions.back();
-        transactions.pop_back();
-        return blk;
+// void EthanBitPeer::mineBlock() {
+//     if (transactions.empty()) {
+//         return; // No transactions to mine
+//     }
+
+//     // Get the next transaction
+//     bitcoinTransaction tx = transactions.back().transaction;
+//     transactions.pop_back();
+
+//     // Create a new block
+//     bitcoinBlock newBlock;
+//     newBlock.minerID = id();
+//     newBlock.transaction = tx;
+//     newBlock.isMalicious = isMalicious;
+
+//     // Set parent block and height
+//     if (!longestChain.empty()) {
+//         newBlock.parentBlockID = longestChain.back();
+//         newBlock.height = blockchain[newBlock.parentBlockID].height + 1;
+//     } else {
+//         newBlock.parentBlockID = -1; // Genesis block
+//         newBlock.height = 1;
+//     }
+
+//     // Add the new block to the blockchain
+//     int newBlockID = generateBlockID();
+//     blockchain[newBlockID] = newBlock;
+
+//     // Update the longest chain
+//     longestChain.push_back(newBlockID);
+
+//     // Broadcast the new block
+//     bitcoinMessage msg{newBlock, true};
+//     messagesSent += neighbors().size();
+//     broadcast(msg);
+// }
+
+// void EthanBitPeer::resolveForks() {
+//     // Find the longest chain
+//     std::vector<int> newLongestChain;
+//     for (const auto &entry : blockchain) {
+//         std::vector<int> chain = getChain(entry.first);
+//         if (chain.size() > newLongestChain.size()) {
+//             newLongestChain = chain;
+//         }
+//     }
+
+//     // Update the longest chain
+//     longestChain = newLongestChain;
+// }
+
+void EthanBitPeer::resolveForks() {
+    std::vector<int> newLongestChain;
+    for (const auto &entry : blockchain) {
+        std::vector<int> chain = getChain(entry.first);
+        if (chain.size() > newLongestChain.size()) {
+            newLongestChain = chain;
+        }
     }
-    // cout << "No transactions found!" << endl;
-    return bitcoinBlock();
+
+    // Log the selected longest chain
+    std::cout << "Selected longest chain: ";
+    for (int blockID : newLongestChain) {
+        std::cout << blockID << " ";
+    }
+    std::cout << std::endl;
+
+    longestChain = newLongestChain;
+}
+
+int EthanBitPeer::generateBlockID() {
+    static int nextBlockID = 0;
+    return nextBlockID++;
+}
+
+std::vector<int> EthanBitPeer::getChain(int blockID) const {
+    std::vector<int> chain;
+    while (blockID != -1) {
+        chain.push_back(blockID);
+        blockID = blockchain.at(blockID).parentBlockID;
+    }
+    std::reverse(chain.begin(), chain.end());
+    return chain;
 }
 
 ostream &EthanBitPeer::printTo(ostream &os) const {
-    os << "Peer ID: " << id() << " | Blocks: " << blockChains.front().size();
+    os << "Peer ID: " << id() << " | Blocks: " << longestChain.size();
     return os;
 }
 
 ostream &operator<<(ostream &os, const EthanBitPeer &peer) {
     return peer.printTo(os);
-}
-
-// void EthanBitPeer::resolveForks() {
-//     int longestChainLength = 0;
-//     size_t longestChainIndex = 0;
-
-//     // Find the longest chain
-//     for (size_t i = 0; i < blockChains.size(); ++i) {
-//         if (blockChains[i].size() > longestChainLength) {
-//             longestChainLength = blockChains[i].size();
-//             longestChainIndex = i;
-//         }
-//     }
-
-//     // Remove other chains that are shorter than the longest one
-//     for (size_t i = 0; i < blockChains.size(); ++i) {
-//         if (i != longestChainIndex) {
-//             blockChains[i].clear(); // Remove shorter chains
-//         }
-//     }
-
-//     // Reset fork count after resolution
-//     forkCount = 0;
-// }
-
-void EthanBitPeer::resolveForks() {
-    int longestChainLength = 0;
-    size_t longestChainIndex = 0;
-
-    // Find the longest chain
-    for (size_t i = 0; i < blockChains.size(); ++i) {
-        if (blockChains[i].size() > longestChainLength) {
-            longestChainLength = blockChains[i].size();
-            longestChainIndex = i;
-        }
-    }
-
-    // Remove other chains that are shorter than the longest one
-    for (size_t i = 0; i < blockChains.size(); ++i) {
-        if (i != longestChainIndex) {
-            blockChains[i].clear(); // Remove shorter chains
-        }
-    }
-
-    // Reset fork count after resolution
-    forkCount = 0;
 }
 
 Simulation<bitcoinMessage, EthanBitPeer> *generateSim() {
