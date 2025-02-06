@@ -37,34 +37,6 @@ EthanBitPeer::EthanBitPeer(const EthanBitPeer &rhs) : Peer(rhs) {}
 
 EthanBitPeer::~EthanBitPeer() {}
 
-// void quantas::EthanBitPeer::endOfRound(
-//     const vector<Peer<bitcoinMessage> *> &_peers
-// ) {
-//     std::vector<EthanBitPeer *> peers;
-//     for (auto peer : _peers) {
-//         peers.push_back(static_cast<EthanBitPeer *>(peer));
-//     }
-
-//     // Find the peer with the longest blockchain
-//     int maxLength = 0;
-//     for (size_t i = 0; i < peers.size(); i++) {
-//         if (!peers[i]->blockChains.empty() &&
-//             peers[i]->blockChains.front().size() > maxLength) {
-//             maxLength = peers[i]->blockChains.front().size();
-//         }
-//     }
-
-//     LogWriter::getTestLog()["blockChain_length"].push_back(maxLength);
-
-//     LogWriter::getTestLog()["forks"].push_back(forkCount);
-
-//     int totalMessagesSent = 0;
-//     for (size_t i = 1; i < peers.size(); i++) {
-//         totalMessagesSent += peers[i]->messagesSent;
-//     }
-//     LogWriter::getTestLog()["totalMessagesSent"].push_back(totalMessagesSent);
-// }
-
 void quantas::EthanBitPeer::endOfRound(
     const vector<Peer<bitcoinMessage> *> &_peers
 ) {
@@ -77,21 +49,46 @@ void quantas::EthanBitPeer::endOfRound(
     int maxLength = 0;
     int roundForkCount = 0;
 
-    // Iterate through peers to track the longest chain and total mined blocks
+    std::unordered_map<int, std::unordered_set<int>> heightToBlocks;
+    // Maps blockchain height to a set of unique block IDs
+
+    // Iterate through peers to track blockchain stats
     for (auto *peer : peers) {
         if (!peer->blockChains.empty()) {
-            int currentChainLength = peer->blockChains.front().size();
-            totalMinedBlocks += currentChainLength;
+            int longestChainSize = 0;
 
-            // Check if the current chain is the longest
-            if (currentChainLength > maxLength) {
-                maxLength = currentChainLength;
+            // Find the longest chain for this peer
+            for (const auto &chain : peer->blockChains) {
+                int chainSize = chain.size();
+                if (chainSize > longestChainSize) {
+                    longestChainSize = chainSize;
+                }
             }
 
-            // Count forks for this peer
-            if (peer->blockChains.size() > 1) {
-                roundForkCount += peer->blockChains.size() - 1;
+            totalMinedBlocks +=
+                longestChainSize; // Track mined blocks correctly
+
+            // Ensure we track the longest blockchain seen across all peers
+            if (longestChainSize > maxLength) {
+                maxLength = longestChainSize;
             }
+
+            // Fork detection: Track unique blocks per height
+            for (auto &chain : peer->blockChains) {
+                if (!chain.empty()) {
+                    int lastBlockHeight = chain.size();
+                    int lastBlockID = chain.back().minerID;
+                    heightToBlocks[lastBlockHeight].insert(lastBlockID);
+                }
+            }
+        }
+    }
+
+    // Counting forks: A fork occurs when multiple blocks exist at the same
+    // height
+    for (const auto &entry : heightToBlocks) {
+        if (entry.second.size() > 1) {
+            roundForkCount += entry.second.size() - 1; // Count extra
         }
     }
 
@@ -102,12 +99,12 @@ void quantas::EthanBitPeer::endOfRound(
     LogWriter::getTestLog()["blockChain_length"].push_back(maxLength);
     LogWriter::getTestLog()["forks"].push_back(roundForkCount);
 
-    // Debugging output
-    std::cout << "Total Mined Blocks: " << totalMinedBlocks << "\n";
-    std::cout << "Max Chain Length: " << maxLength << "\n";
-    std::cout << "Fork Count: " << roundForkCount << "\n";
-    std::cout << "Mined Blocks - Longest Chain: "
-              << totalMinedBlocks - maxLength << "\n";
+    // // Debugging output
+    // std::cout << "Total Mined Blocks: " << totalMinedBlocks << "\n";
+    // std::cout << "Max Chain Length: " << maxLength << "\n";
+    // std::cout << "Fork Count: " << roundForkCount << "\n";
+    // std::cout << "Mined Blocks - Longest Chain: "
+    //           << totalMinedBlocks - maxLength << "\n";
 }
 
 void EthanBitPeer::performComputation() {
