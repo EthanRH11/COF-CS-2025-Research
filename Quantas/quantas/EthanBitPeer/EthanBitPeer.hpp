@@ -189,6 +189,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     int mineRate = 10;
     static int currentTransaction;
     static mutex currentTransaction_mutex;
+    static int blockCounter;
 
     // Specific Operation
     void checkIncomingMessages();
