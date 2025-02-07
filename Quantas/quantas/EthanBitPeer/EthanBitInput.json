@@ -10,29 +10,12 @@
       },
       "topology": {
         "type": "complete",
-        "initialPeers": 1000,
-        "totalPeers": 1000,
+        "initialPeers": 100,
+        "totalPeers": 100,
         "maxMsgsRec": 1
       },
       "tests": 1,
-      "rounds": 1000
-    },
-    {
-      "algorithm": "EthanBitPeer",
-      "logFile": "Delay50.txt",
-      "threadCount": 1,
-      "distribution": {
-        "type": "uniform",
-        "maxDelay": 50
-      },
-      "topology": {
-        "type": "complete",
-        "initialPeers": 1000,
-        "totalPeers": 1000,
-        "maxMsgsRec": 1
-      },
-      "tests": 1,
-      "rounds": 1000
+      "rounds": 100
     }
   ]
 }
