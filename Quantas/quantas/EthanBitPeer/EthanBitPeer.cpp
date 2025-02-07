@@ -52,131 +52,101 @@ void EthanBitPeer::linkBlocks() {
     bool linked;
     do {
         linked = false;
-
-        // Iterate over the unlinked blocks
-        for (int i = 0; i < unlinkedBlocks.size(); i++) {
+        for (size_t i = 0; i < unlinkedBlocks.size(); i++) {
             bitcoinBlock block = unlinkedBlocks[i];
             int parentID = block.parentBlockID;
 
-            // Check if the parent block exists in the blocks map
-            if (blocks.find(parentID) != blocks.end()) {
-                // If parent block exists, link the current block
-                cout << "Linking block with ID " << block.blockID
-                     << " to parent ID " << parentID << endl;
-                blocks[block.blockID] =
-                    block; // Add the current block to the blocks map
+            if (parentID == -1) {
+                cout << "DEBUG Linking genesis block" << block.blockID << endl;
+                blocks[block.blockID] = block;
+                edges[parentID].push_back(block.blockID);
+                tips.insert(block.blockID);
+                unlinkedBlocks.erase(unlinkedBlocks.begin() + 1);
+                linked = true;
+                break;
+            } else if (blocks.find(parentID) != blocks.end()) {
+                cout << "DEBUG: Linking Block" << block.blockID << " to parent "
+                     << parentID << endl;
 
-                // Add the current block's ID to the edges list of the parent
+                blocks[block.blockID] = block;
                 edges[parentID].push_back(block.blockID);
 
-                // If this creates a fork, make sure to update fork count
-                // properly
                 if (edges[parentID].size() > 1) {
-                    cout << "Fork detected at parent block ID: " << parentID
+                    cout << "DEBUG: Fork detected at block " << parentID
+                         << "with " << edges[parentID].size() << " children"
                          << endl;
                 }
 
-                // Remove parent block ID from tips if it was a tip
                 tips.erase(parentID);
-
-                // Insert the current block's ID into the tips set
                 tips.insert(block.blockID);
 
-                // Remove the block from the unlinked list as it has been linked
                 unlinkedBlocks.erase(unlinkedBlocks.begin() + i);
                 linked = true;
-                break; // Exit the loop once a block is successfully linked
+                break;
             }
         }
-    } while (linked); // Continue until no more blocks can be linked
+    } while (linked);
+
+    if (!unlinkedBlocks.empty()) {
+        cout << "DEBUG: Remaining unlinked blocks: ";
+        for (const auto &block : unlinkedBlocks) {
+            cout << block.blockID << "(parent:" << block.parentBlockID << ")";
+        }
+        cout << endl;
+    }
 }
 
 void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
-    int blockChainLength =
-        longestChain.size(); // Assuming longestChain is correctly updated
-    cout << "End of round: Block Chain length: " << blockChainLength << endl;
+    updateLongestChain();
 
-    // Count the number of forks (where a parent block has multiple child
-    // blocks)
+    int blockChainLength = longestChain.size();
+    cout << "End of round: Block Chain Length: " << blockChainLength << endl;
+
+    // Count forks and print detailed blockchain structure
     int forkCount = 0;
+    cout << "DEBUG: Current BlockChain Structure: " << endl;
     for (const auto &edge : edges) {
+        cout << "Block " << edge.first << " -> Children: ";
+        for (int childId : edge.second) {
+            cout << childId << " ";
+        }
+        cout << endl;
+
         if (edge.second.size() > 1) {
             forkCount++;
+            cout << "DEBUG: Fork at block " << edge.first << " with "
+                 << edge.second.size() << " children" << endl;
         }
     }
 
-    cout << "Forks: " << forkCount << endl; // Log the number of forks detected
+    cout << "Forks: " << forkCount << endl;
+
+    // Print current tips
+    cout << "DEBUG: Current tips: ";
+    for (int tip : tips) {
+        cout << tip << " ";
+    }
+    cout << endl;
+
     LogWriter::getTestLog()["Block Chain Length"].push_back(blockChainLength);
     LogWriter::getTestLog()["Forks: "].push_back(forkCount);
 }
-
-// void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
-//     int blockChainLength =
-//         longestChain.size(); // Assuming longestChain is correctly updated
-//     cout << "End of round: Block Chain length: " << blockChainLength << endl;
-//     // Count the number of forks (where a parent block has multiple child
-//     // blocks)
-//     int forkCount = 0;
-//     for (const auto &edge : edges) {
-//         if (edge.second.size() > 1) {
-//             forkCount++;
-//         }
-//     }
-
-//     LogWriter::getTestLog()["Block Chain
-//     Length"].push_back(blockChainLength); LogWriter::getTestLog()["Forks:
-//     "].push_back(forkCount);
-// }
 
 void EthanBitPeer::checkIncomingMessages() {
     while (!inStreamEmpty()) {
         Packet<bitcoinMessage> newMsg = popInStream();
         if (newMsg.getMessage().mined) {
+            cout << "DEBUG: Recieved mined block "
+                 << newMsg.getMessage().block.blockID << " with parent "
+                 << newMsg.getMessage().block.parentBlockID << endl;
             unlinkedBlocks.push_back(newMsg.getMessage().block);
+            linkBlocks();
         } else {
             transactions.push_back(newMsg.getMessage().block);
             cout << "Transaction added" << endl;
         }
     }
-    linkBlocks();
 }
-
-// void EthanBitPeer::linkBlocks() {
-//     bool linked;
-//     do {
-//         linked = false;
-
-//         // Iterate over the unlinked blocks
-//         for (int i = 0; i < unlinkedBlocks.size(); i++) {
-//             bitcoinBlock block = unlinkedBlocks[i];
-//             int parentID = block.parentBlockID;
-
-//             // Check if the parent block exists in the blocks map
-//             if (blocks.find(parentID) != blocks.end()) {
-//                 // If parent block exists, link the current block
-//                 cout << "Linking block with ID " << block.blockID
-//                      << " to parent ID " << parentID << endl;
-//                 blocks[block.blockID] =
-//                     block; // Add the current block to the blocks map
-
-//                 // Add the current block's ID to the edges list of the parent
-//                 // block
-//                 edges[parentID].push_back(block.blockID);
-
-//                 // Remove parent block ID from tips if it was a tip
-//                 tips.erase(parentID);
-
-//                 // Insert the current block's ID into the tips set
-//                 tips.insert(block.blockID);
-
-//                 // Remove the block from the unlinked list as it has been
-//                 linked unlinkedBlocks.erase(unlinkedBlocks.begin() + i);
-//                 linked = true;
-//                 break; // Exit the loop once a block is successfully linked
-//             }
-//         }
-//     } while (linked); // Continue until no more blocks can be linked
-// }
 
 bool EthanBitPeer::checkSubmitTrans() { return randMod(submitRate) == 0; }
 
@@ -195,25 +165,29 @@ void EthanBitPeer::mineBlocks() {
     if (!transactions.empty()) {
         bitcoinBlock newBlock;
 
-        if (longestChain.empty()) { // Genesis block
-            newBlock.blockID = blockCounter++;
-            newBlock.parentBlockID = -1;
+        if (tips.empty()) {
+            newBlock.parentBlockID = -1; // genesis block
         } else {
-            newBlock.blockID = blockCounter++;
-            newBlock.parentBlockID = longestChain.back(); // Use the current tip
+            auto it = tips.begin();
+            std::advance(it, randMod(tips.size()));
+            newBlock.parentBlockID = *it;
         }
 
+        newBlock.blockID = blockCounter++;
         newBlock.transaction = transactions.front().transaction;
         transactions.erase(transactions.begin());
 
-        blocks[newBlock.blockID] = newBlock;
+        cout << "DEBUG: Mining new block " << newBlock.blockID
+             << " with parent " << newBlock.parentBlockID << endl;
 
-        // Update edges and tips
+        blocks[newBlock.blockID] = newBlock;
         edges[newBlock.parentBlockID].push_back(newBlock.blockID);
-        tips.erase(newBlock.parentBlockID);
+
+        if (newBlock.parentBlockID != -1) {
+            tips.erase(newBlock.parentBlockID);
+        }
         tips.insert(newBlock.blockID);
 
-        // Broadcast the new block
         bitcoinMessage msg;
         msg.block = newBlock;
         msg.mined = true;
@@ -246,29 +220,38 @@ bitcoinBlock EthanBitPeer::findNextTransaction() {
 }
 
 void EthanBitPeer::updateLongestChain() {
-    std::vector<int> longestPath;
+    vector<int> longestPath;
 
     for (int tip : tips) {
-        std::vector<int> currentPath;
-        int currentBlockId = tip;
+        vector<int> currentPath;
+        int currentBlockID = tip;
 
-        while (currentBlockId != -1) {
-            currentPath.push_back(currentBlockId);
-            auto it = blocks.find(currentBlockId);
+        while (currentBlockID != -1) {
+            currentPath.push_back(currentBlockID);
+            auto it = blocks.find(currentBlockID);
             if (it != blocks.end()) {
-                currentBlockId = it->second.parentBlockID;
+                currentBlockID = it->second.parentBlockID;
             } else {
-                currentBlockId = -1; // Break if block not found
+                cout << "DEBUG: Block" << currentBlockID
+                     << " not found in blocks map" << endl;
+                break;
             }
         }
 
-        std::reverse(currentPath.begin(), currentPath.end());
+        reverse(currentPath.begin(), currentPath.end());
+
         if (currentPath.size() > longestPath.size()) {
             longestPath = currentPath;
         }
     }
 
     longestChain = longestPath;
+
+    cout << "DEBUG: Longest Chain: ";
+    for (int blockID : longestChain) {
+        cout << blockID << " -> ";
+    }
+    cout << "end" << endl;
 }
 
 int EthanBitPeer::getLongestChainTip() const {
