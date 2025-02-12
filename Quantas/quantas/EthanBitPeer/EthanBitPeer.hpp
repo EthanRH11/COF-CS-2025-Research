@@ -24,102 +24,6 @@
 // along with QUANTAS. If not, see <https://www.gnu.org/licenses/>.
 // */
 
-// #ifndef ETHANBITPEER_HPP
-// #define ETHANBITPEER_HPP
-
-// #include "../Common/Peer.hpp"
-// #include "../Common/Simulation.hpp"
-// #include <mutex>
-// #include <unordered_map>
-// #include <unordered_set>
-// #include <vector>
-
-// namespace quantas {
-
-// using std::mutex;
-// using std::ostream;
-// using std::unordered_map;
-// using std::unordered_set;
-// using std::vector;
-
-// // Transaction Structure
-// struct bitcoinTransaction {
-//     long int id = -1;         // Transaction ID
-//     int roundSubmitted = -1;  // Round when the transaction was submitted
-//     bool isMalicious = false; // Marks if transaction is malicious
-// };
-
-// // Block Structure
-// struct bitcoinBlock {
-//     long int minerID = -1;          // ID of peer who mined this block
-//     bitcoinTransaction transaction; // Transaction included in the block
-//     int parentBlockID = -1;         // Reference to parent (previous) block
-//     int height = 1;                 // Height of the block in the chain
-//     bool isMalicious = false;       // Is block part of an attack
-// };
-
-// // Message Structure
-// struct bitcoinMessage {
-//     bitcoinBlock block; // Block being sent
-//     bool mined = false; // True if mined block, false if transaction
-// };
-
-// class EthanBitPeer : public Peer<bitcoinMessage> {
-//   public:
-//     EthanBitPeer(long id);
-//     EthanBitPeer(const EthanBitPeer &rhs);
-//     ~EthanBitPeer();
-
-//     void performComputation(); // Process transactions and mine blocks
-//     void endOfRound(const vector<Peer<bitcoinMessage> *> &_peers
-//     ); // Runs at end of each round
-
-//     void log() const { printTo(*_log); };
-//     ostream &printTo(ostream &) const;
-//     friend ostream &operator<<(ostream &, const EthanBitPeer &);
-
-//     // Blockchain Data Structure
-//     unordered_map<int, bitcoinBlock> blockchain; // Key: block ID, Value:
-//     Block vector<int> longestChain; // Stores the IDs of blocks in the
-//     longest chain
-
-//     // Unlinked blocks and transactions
-//     vector<bitcoinBlock> unlinkedBlocks;
-//     vector<bitcoinBlock> transactions;
-
-//     // Sim Params
-//     int submitRate = 10;      // Probability of submitting a transaction
-//     int mineRate = 10;        // Probability of mining a block
-//     bool isMalicious = false; // True if this peer is attacking
-//     int messagesSent = 0;     // Track messages sent
-//     int forkCount = 0;        // Track forks in the current round
-//     int totalForkCount = 0;   // Track total forks
-
-//     // Transaction ID management
-//     static int currentTransactionID;
-//     static mutex transactionMutex;
-
-//     // Blockchain Operations
-//     void checkIncomingMessages(); // Process incoming messages
-//     bool checkSubmitTrans();      // Check if transaction should be submitted
-//     void submitTrans();           // Broadcast a new transaction
-//     bool checkMineBlock();        // Check if mining is possible
-//     void mineBlock();             // Create and broadcast a new block
-//     bitcoinBlock findNextTrans(); // Find an unmined transaction
-//     void resolveForks(); // Resolve forks by selecting the longest chain
-
-//     // Helper Functions
-//     int generateBlockID(); // Generate a unique block ID
-//     vector<int> getChain(int blockID
-//     ) const; // Get the full chain for a given block
-// };
-
-// Simulation<bitcoinMessage, EthanBitPeer> *generateSim();
-
-// } // namespace quantas
-
-// #endif // ETHANBITPEER_HPP
-
 #ifndef ETHANBITPEER_HPP
 #define ETHANBITPEER_HPP
 
@@ -150,9 +54,9 @@ struct bitcoinTransaction {
 struct bitcoinBlock {
     long int minerID = -1;          // ID of peer who mined this block
     bitcoinTransaction transaction; // Transaction included in the block
-    int blockID = -1;
-    int parentBlockID = -1; // Reference to parent (previous) block
-    int height = 1;         // Height of the block in the chain
+    int blockID = -1;               // Unique identifier for the block
+    int parentBlockID = -1;         // Reference to parent (previous) block
+    int height = 1;                 // Height of the block in the chain
 };
 
 // Message Structure
@@ -161,49 +65,80 @@ struct bitcoinMessage {
     bool mined = false; // True if mined block, false if transaction
 };
 
+// Statistics for tracking chain switches and flipped blocks
+struct ChainStats {
+    int totalSwitches = 0; // Total number of times the miner switched chains
+    int totalFlippedBlocks = 0; // Total number of blocks that were flipped
+    vector<int> currentChain;   // Current chain being followed
+    vector<vector<int>> switchHistory; // History of chain switches
+};
+
 class EthanBitPeer : public Peer<bitcoinMessage> {
   public:
-    EthanBitPeer(long);
+    // Constructors and Destructor
+    EthanBitPeer(long id);
     EthanBitPeer(const EthanBitPeer &rhs);
     ~EthanBitPeer();
 
+    // Core Functions
     void performComputation();
     void endOfRound(const vector<Peer<bitcoinMessage> *> &_peers);
 
+    // Output Functions
     void log() const { printTo(*_log); };
     ostream &printTo(ostream &) const;
     friend ostream &operator<<(ostream &, const EthanBitPeer &);
 
-    // Blockchain Structure
-    vector<int> longestChain;
-    unordered_map<int, bitcoinBlock> blocks;
+  private:
+    // Blockchain Data Structures
+    vector<int> longestChain;                // Current longest chain
+    unordered_map<int, bitcoinBlock> blocks; // All blocks by ID
     unordered_map<int, vector<int>>
         edges;     // Parent blocks with children (forks)
-    set<int> tips; // blocks with no children
+    set<int> tips; // Blocks with no children
     int longestChainLength = 1;
 
-    // Transaction & Mining Functions
-    vector<bitcoinBlock> unlinkedBlocks; // Blocks waiting to be linked
-    vector<bitcoinBlock> transactions;   // Recieved Transaction
-    int submitRate = 10;
-    int mineRate = 10;
-    static int currentTransaction;
-    static mutex currentTransaction_mutex;
-    static int blockCounter;
+    // Chain Tracking Structures
+    unordered_map<long, ChainStats> minerStats; // Stats for each miner
 
-    // Specific Operation
-    void checkIncomingMessages();
-    void linkBlocks();
-    bool checkSubmitTrans();
-    void submitTrans();
-    bool checkMineBlock();
-    void mineBlocks();
-    int getLongestChainTip() const;
-    bitcoinBlock findNextTransaction();
-    void updateLongestChain(); // determines longest chain tip
+    // Transaction & Block Management
+    vector<bitcoinBlock> unlinkedBlocks;   // Blocks waiting to be linked
+    vector<bitcoinBlock> transactions;     // Received transactions
+    static int blockCounter;               // Global block counter
+    static int currentTransaction;         // Current transaction ID
+    static mutex currentTransaction_mutex; // Mutex for transaction ID
+
+    // Mining Parameters
+    int submitRate = 20; // Transaction submission rate
+    int mineRate = 20;   // Block mining rate
+
+    // Core Operations
+    void checkIncomingMessages();       // Process incoming messages
+    void linkBlocks();                  // Link blocks to blockchain
+    bool checkSubmitTrans();            // Check if should submit transaction
+    void submitTrans();                 // Submit new transaction
+    bool checkMineBlock();              // Check if should mine
+    void mineBlocks();                  // Mine new blocks
+    bitcoinBlock findNextTransaction(); // Find next transaction to mine
+    void updateLongestChain();          // Update longest chain
+
+    // Chain Tracking Operations
+    void
+    trackChainSwitch(const vector<int> &oldChain, const vector<int> &newChain);
+    int countFlippedBlocks(
+        const vector<int> &oldChain, const vector<int> &newChain
+    );
+    int getLongestChainTip() const; // Get tip of longest chain
+
+    // Statistics Getters
+    int getTotalSwitches(long minerId) const;
+    int getTotalFlippedBlocks(long minerId) const;
+    const vector<int> &getCurrentChain(long minerId) const;
 };
 
-Simulation<quantas::bitcoinMessage, quantas::EthanBitPeer> *generateSim();
+// Simulation Generator
+Simulation<bitcoinMessage, EthanBitPeer> *generateSim();
+
 } // namespace quantas
 
-#endif
+#endif // ETHANBITPEER_HPP
