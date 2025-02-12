@@ -84,6 +84,23 @@
       },
       "tests": 1,
       "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay80.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 80
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
     }
   ]
 }

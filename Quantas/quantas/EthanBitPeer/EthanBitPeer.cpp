@@ -96,8 +96,8 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
     int minerFlippedBlocks = getTotalFlippedBlocks(id());
 
     // Calculate network-wide statistics
-    int totalNetworkSwitches = 0;
-    int totalNetworkFlippedBlocks = 0;
+    int totalNetworkSwitches = getTotalSwitches(id());
+    int totalNetworkFlippedBlocks = getTotalFlippedBlocks(id());
 
     // Cast peers to EthanBitPeer to access their statistics
     for (const auto &peer : _peers) {
@@ -117,6 +117,10 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
     LogWriter::getTestLog()["Network Total Flipped Blocks"].push_back(
         totalNetworkFlippedBlocks
     );
+
+    /* I want to track switches that occured per round this is essentially the
+       number of forks per round also, the number of switches divided by peers
+       in the network*/
 }
 
 void EthanBitPeer::checkIncomingMessages() {
