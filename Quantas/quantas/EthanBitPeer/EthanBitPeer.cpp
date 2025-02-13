@@ -96,8 +96,8 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
     int minerFlippedBlocks = getTotalFlippedBlocks(id());
 
     // Calculate network-wide statistics
-    int totalNetworkSwitches = getTotalSwitches(id());
-    int totalNetworkFlippedBlocks = getTotalFlippedBlocks(id());
+    int totalNetworkSwitches = 0;
+    int totalNetworkFlippedBlocks = 0;
 
     // Cast peers to EthanBitPeer to access their statistics
     for (const auto &peer : _peers) {
@@ -206,7 +206,6 @@ bitcoinBlock EthanBitPeer::findNextTransaction() {
          << " and parent block id: " << nextBlock.parentBlockID << endl;
     // No need for 'transaction' member, as it is part of the block
     // The transaction is already contained in 'nextBlock'
-
     return nextBlock;
 }
 
