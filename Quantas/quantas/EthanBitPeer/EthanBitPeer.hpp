@@ -109,9 +109,10 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     static mutex currentTransaction_mutex; // Mutex for transaction ID
 
     // Mining Parameters
-    int submitRate = 1; // Transaction submission rate
-    int mineRate = 1;   // Block mining rate
+    int submitRate = 10; // Transaction submission rate
+    int mineRate = 10;   // Block mining rate
 
+    void printBlockChain() const;
     // Core Operations
     void checkIncomingMessages();       // Process incoming messages
     void linkBlocks();                  // Link blocks to blockchain

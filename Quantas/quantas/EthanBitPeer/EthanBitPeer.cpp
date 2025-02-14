@@ -57,7 +57,8 @@ void EthanBitPeer::linkBlocks() {
             int parentID = block.parentBlockID;
 
             if (parentID == -1) {
-                cout << "DEBUG Linking genesis block" << block.blockID << endl;
+                // cout << "DEBUG Linking genesis block" << block.blockID <<
+                // endl;
                 blocks[block.blockID] = block;
                 edges[parentID].push_back(block.blockID);
                 tips.insert(block.blockID);
@@ -65,16 +66,17 @@ void EthanBitPeer::linkBlocks() {
                 linked = true;
                 break;
             } else if (blocks.find(parentID) != blocks.end()) {
-                cout << "DEBUG: Linking Block" << block.blockID << " to parent "
-                     << parentID << endl;
+                // cout << "DEBUG: Linking Block" << block.blockID << " to
+                // parent "
+                //      << parentID << endl;
 
                 blocks[block.blockID] = block;
                 edges[parentID].push_back(block.blockID);
 
                 if (edges[parentID].size() > 1) {
-                    cout << "DEBUG: Fork detected at block " << parentID
-                         << "with " << edges[parentID].size() << " children"
-                         << endl;
+                    // cout << "DEBUG: Fork detected at block " << parentID
+                    //      << "with " << edges[parentID].size() << " children"
+                    //      << endl;
                 }
 
                 tips.erase(parentID);
@@ -100,41 +102,36 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
     int totalNetworkFlippedBlocks = 0;
 
     // Cast peers to EthanBitPeer to access their statistics
-    for (const auto &peer : _peers) {
-        const EthanBitPeer *bitPeer = static_cast<const EthanBitPeer *>(peer);
-        totalNetworkSwitches += bitPeer->getTotalSwitches(bitPeer->id());
-        totalNetworkFlippedBlocks +=
-            bitPeer->getTotalFlippedBlocks(bitPeer->id());
+    for (const auto &pair : minerStats) {
+        totalNetworkSwitches += pair.second.totalSwitches;
+        totalNetworkFlippedBlocks += pair.second.totalFlippedBlocks;
+    }
+
+    if (getRound() == 100) {
+        printBlockChain();
     }
 
     LogWriter::getTestLog()["Block Chain Length"].push_back(longestChain.size()
     );
-    LogWriter::getTestLog()["Chain Switches"].push_back(minerSwitches);
-    LogWriter::getTestLog()["Flipped Blocks"].push_back(minerFlippedBlocks);
+    // LogWriter::getTestLog()["Chain Switches"].push_back(minerSwitches);
+    // LogWriter::getTestLog()["Flipped Blocks"].push_back(minerFlippedBlocks);
     LogWriter::getTestLog()["Network Total Switches"].push_back(
         totalNetworkSwitches
     );
     LogWriter::getTestLog()["Network Total Flipped Blocks"].push_back(
         totalNetworkFlippedBlocks
     );
-
-    /* I want to track switches that occured per round this is essentially the
-       number of forks per round also, the number of switches divided by peers
-       in the network*/
 }
 
 void EthanBitPeer::checkIncomingMessages() {
     while (!inStreamEmpty()) {
         Packet<bitcoinMessage> newMsg = popInStream();
         if (newMsg.getMessage().mined) {
-            cout << "DEBUG: Recieved mined block "
-                 << newMsg.getMessage().block.blockID << " with parent "
-                 << newMsg.getMessage().block.parentBlockID << endl;
             unlinkedBlocks.push_back(newMsg.getMessage().block);
             linkBlocks();
         } else {
             transactions.push_back(newMsg.getMessage().block);
-            cout << "Transaction added" << endl;
+            // cout << "Transaction added" << endl;
         }
     }
 }
@@ -156,27 +153,36 @@ void EthanBitPeer::mineBlocks() {
     if (!transactions.empty()) {
         bitcoinBlock newBlock;
 
-        if (tips.empty()) {
-            newBlock.parentBlockID = -1; // genesis block
-        } else {
-            auto it = tips.begin();
-            std::advance(it, randMod(tips.size()));
-            newBlock.parentBlockID = *it;
+        // If our longest chain is empty, create & broadcast a genesis block.
+        if (longestChain.empty()) {
+            bitcoinBlock genesisBlock;
+            genesisBlock.blockID = blockCounter++;
+            genesisBlock.parentBlockID = -1; // indicates genesis
+
+            // (Optionally set genesisBlock.transaction here if desired)
+            blocks[genesisBlock.blockID] = genesisBlock;
+            tips.insert(genesisBlock.blockID);
+            longestChain.push_back(genesisBlock.blockID);
+
+            // Broadcast genesis block to help other peers converge
+            bitcoinMessage genesisMsg;
+            genesisMsg.block = genesisBlock;
+            genesisMsg.mined = true;
+            broadcast(genesisMsg);
         }
 
+        // Mine on the tip of our current longest chain
+        newBlock.parentBlockID = longestChain.back();
         newBlock.blockID = blockCounter++;
         newBlock.transaction = transactions.front().transaction;
         transactions.erase(transactions.begin());
 
-        cout << "DEBUG: Mining new block " << newBlock.blockID
-             << " with parent " << newBlock.parentBlockID << endl;
-
         blocks[newBlock.blockID] = newBlock;
         edges[newBlock.parentBlockID].push_back(newBlock.blockID);
 
-        if (newBlock.parentBlockID != -1) {
-            tips.erase(newBlock.parentBlockID);
-        }
+        // Update tips: remove the parent (since it’s no longer a tip) and add
+        // the new block
+        tips.erase(newBlock.parentBlockID);
         tips.insert(newBlock.blockID);
 
         bitcoinMessage msg;
@@ -188,7 +194,7 @@ void EthanBitPeer::mineBlocks() {
 
 bitcoinBlock EthanBitPeer::findNextTransaction() {
     if (transactions.empty()) {
-        cout << "No transactions available" << endl;
+        // cout << "No transactions available" << endl;
         return bitcoinBlock(
         ); // Return an empty block if there are no transactions
     }
@@ -202,16 +208,14 @@ bitcoinBlock EthanBitPeer::findNextTransaction() {
     nextBlock.parentBlockID = getLongestChainTip(
     ); // Set parent block ID to the latest block in the chain
 
-    cout << "Found next transaction with block ID: " << nextBlock.blockID
-         << " and parent block id: " << nextBlock.parentBlockID << endl;
-    // No need for 'transaction' member, as it is part of the block
-    // The transaction is already contained in 'nextBlock'
     return nextBlock;
 }
 
 void EthanBitPeer::updateLongestChain() {
     vector<int> newLongestChain;
+    unordered_map<int, vector<int>> chainPaths;
 
+    // Traverse back from each tip to find the longest chain
     for (int tip : tips) {
         vector<int> currentPath;
         int currentBlockID = tip;
@@ -227,20 +231,72 @@ void EthanBitPeer::updateLongestChain() {
         }
 
         reverse(currentPath.begin(), currentPath.end());
+        chainPaths[tip] = currentPath;
 
+        // Keep the longest chain found
         if (currentPath.size() > newLongestChain.size()) {
             newLongestChain = currentPath;
         }
     }
 
+    // Check if the chain has changed and update stats
     if (newLongestChain != longestChain) {
         trackChainSwitch(longestChain, newLongestChain);
+        longestChain = newLongestChain;
+        longestChainLength = longestChain.size();
+        minerStats[id()].currentChain = longestChain;
+    }
+}
+
+// void EthanBitPeer::updateLongestChain() {
+//     vector<int> newLongestChain;
+
+//     // For each tip, follow the chain back to genesis.
+//     for (int tip : tips) {
+//         vector<int> currentPath;
+//         int currentBlockID = tip;
+
+//         while (currentBlockID != -1) {
+//             currentPath.push_back(currentBlockID);
+//             auto it = blocks.find(currentBlockID);
+//             if (it != blocks.end()) {
+//                 currentBlockID = it->second.parentBlockID;
+//             } else {
+//                 break;
+//             }
+//         }
+
+//         // Reverse so that the chain runs from genesis to tip.
+//         reverse(currentPath.begin(), currentPath.end());
+
+//         // If this chain is longer than our current candidate, adopt it.
+//         if (currentPath.size() > newLongestChain.size()) {
+//             newLongestChain = currentPath;
+//         }
+//     }
+
+//     // If there is any change in our chain, record the switch.
+//     if (newLongestChain != longestChain) {
+//         trackChainSwitch(longestChain, newLongestChain);
+//         longestChain = newLongestChain;
+//         longestChainLength = longestChain.size();
+//         minerStats[id()].currentChain = longestChain;
+//     }
+// }
+
+int EthanBitPeer::countFlippedBlocks(
+    const vector<int> &oldChain, const vector<int> &newChain
+) {
+    size_t i = 0;
+    // Find where the chains diverge
+    while (i < oldChain.size() && i < newChain.size() &&
+           oldChain[i] == newChain[i]) {
+        i++;
     }
 
-    longestChain = newLongestChain;
-    longestChainLength = longestChain.size();
-
-    minerStats[id()].currentChain = longestChain;
+    // Only count the blocks that were abandoned from the old chain
+    // (in your example, this would be D, E, F)
+    return oldChain.size() - i;
 }
 
 void EthanBitPeer::trackChainSwitch(
@@ -256,23 +312,16 @@ void EthanBitPeer::trackChainSwitch(
         minerStats[id()].totalSwitches++;
         minerStats[id()].totalFlippedBlocks += flippedBlocks;
 
-        minerStats[id()].switchHistory.push_back(oldChain);
-
-        cout << "DEBUG: Miner " << id() << " switch chains." << flippedBlocks
-             << " blocks were flipped." << endl;
+        // Debug output to understand what's happening
+        // cout << "DEBUG: Miner " << id() << " switched chains." << endl;
+        // cout << "Old chain: ";
+        // for (int block : oldChain)
+        //     cout << block << " ";
+        // cout << "\nNew chain: ";
+        // for (int block : newChain)
+        //     cout << block << " ";
+        // cout << "\nFlipped blocks: " << flippedBlocks << endl;
     }
-}
-
-int EthanBitPeer::countFlippedBlocks(
-    const vector<int> &oldChain, const vector<int> &newChain
-) {
-    size_t i = 0;
-    while (i < oldChain.size() && i < newChain.size() &&
-           oldChain[i] == newChain[i]) {
-        i++;
-    }
-
-    return oldChain.size() - i;
 }
 
 int EthanBitPeer::getLongestChainTip() const {
@@ -303,6 +352,17 @@ ostream &EthanBitPeer::printTo(ostream &os) const {
 
 ostream &operator<<(ostream &os, const EthanBitPeer &peer) {
     return peer.printTo(os);
+}
+
+void EthanBitPeer::printBlockChain() const {
+    cout << "\nFinal Longest Chain For Peer " << id() << ":\n";
+    for (int blockId : longestChain) {
+        cout << blockId;
+        if (blockId != longestChain.back()) {
+            cout << " -> ";
+        }
+    }
+    cout << "\nChain Length: " << longestChain.size() << endl;
 }
 
 Simulation<quantas::bitcoinMessage, quantas::EthanBitPeer> *generateSim() {
