@@ -107,20 +107,59 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
         totalNetworkFlippedBlocks += pair.second.totalFlippedBlocks;
     }
 
-    if (getRound() == 100) {
+    if (getRound() == 99) {
         printBlockChain();
+        printFrequencyData();
     }
+
+    std::unordered_map<int, int> globalFlipFrequency;
+    for (const auto &pair : minerStats) {
+        const auto &localFrequency = pair.second.flipFrequency;
+        for (const auto &entry : localFrequency) {
+            int blocksFlipped = entry.first;
+            int frequency = entry.second;
+            globalFlipFrequency[blocksFlipped] += frequency;
+        }
+    }
+
+    std::vector<std::pair<int, int>> sortedFrequency(
+        globalFlipFrequency.begin(), globalFlipFrequency.end()
+    );
+    std::sort(
+        sortedFrequency.begin(), sortedFrequency.end(),
+        [](const auto &a, const auto &b) { return a.first < b.first; }
+    );
+
+    std::string frequencySummary;
+    for (const auto &entry : sortedFrequency) {
+        frequencySummary +=
+            std::to_string(entry.first) +
+            (entry.first == 1 ? " block flipped: " : " blocks flipped: ") +
+            std::to_string(entry.second) + "\n";
+    }
+    if (!frequencySummary.empty()) {
+        frequencySummary.pop_back();
+        frequencySummary.pop_back();
+    }
+
+    LogWriter::getTestLog()["Frequency"].push_back(frequencySummary);
 
     LogWriter::getTestLog()["Block Chain Length"].push_back(longestChain.size()
     );
-    // LogWriter::getTestLog()["Chain Switches"].push_back(minerSwitches);
-    // LogWriter::getTestLog()["Flipped Blocks"].push_back(minerFlippedBlocks);
     LogWriter::getTestLog()["Network Total Switches"].push_back(
         totalNetworkSwitches
     );
     LogWriter::getTestLog()["Network Total Flipped Blocks"].push_back(
         totalNetworkFlippedBlocks
     );
+
+    if (getRound() == 100) {
+        cout << "frequency summary" << endl;
+        cout << endl;
+        cout << frequencySummary << endl;
+        cout << endl;
+        cout << "***********************";
+    }
 }
 
 void EthanBitPeer::checkIncomingMessages() {
@@ -311,7 +350,7 @@ void EthanBitPeer::trackChainSwitch(
     if (flippedBlocks > 0) {
         minerStats[id()].totalSwitches++;
         minerStats[id()].totalFlippedBlocks += flippedBlocks;
-
+        ++minerStats[id()].flipFrequency[flippedBlocks];
         // Debug output to understand what's happening
         // cout << "DEBUG: Miner " << id() << " switched chains." << endl;
         // cout << "Old chain: ";
@@ -363,6 +402,38 @@ void EthanBitPeer::printBlockChain() const {
         }
     }
     cout << "\nChain Length: " << longestChain.size() << endl;
+}
+
+void EthanBitPeer::printFrequencyData() const {
+    std::unordered_map<int, int> globalFlipFrequency;
+    for (const auto &pair : minerStats) {
+        const auto &localFrequency = pair.second.flipFrequency;
+        for (const auto &entry : localFrequency) {
+            int blocksFlipped = entry.first;
+            int frequency = entry.second;
+            globalFlipFrequency[blocksFlipped] += frequency;
+        }
+    }
+
+    std::vector<std::pair<int, int>> sortedFrequency(
+        globalFlipFrequency.begin(), globalFlipFrequency.end()
+    );
+    std::sort(
+        sortedFrequency.begin(), sortedFrequency.end(),
+        [](const auto &a, const auto &b) { return a.first < b.first; }
+    );
+
+    std::string frequencySummary;
+    for (const auto &entry : sortedFrequency) {
+        frequencySummary +=
+            std::to_string(entry.first) +
+            (entry.first == 1 ? " block flipped: " : " blocks flipped: ") +
+            std::to_string(entry.second) + "\n";
+    }
+
+    cout << "\n*****************************" << "\n";
+    cout << "\nFrequency Data (Global): " << "\n";
+    cout << frequencySummary;
 }
 
 Simulation<quantas::bitcoinMessage, quantas::EthanBitPeer> *generateSim() {

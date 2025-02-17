@@ -6,16 +6,16 @@
       "threadCount": 1,
       "distribution": {
         "type": "uniform",
-        "maxDelay": 10
+        "maxDelay": 15
       },
       "topology": {
         "type": "complete",
-        "initialPeers": 50,
-        "totalPeers": 50,
+        "initialPeers": 100,
+        "totalPeers": 100,
         "maxMsgsRec": 1
       },
       "tests": 1,
-      "rounds": 500
+      "rounds": 100
     }
   ]
 }

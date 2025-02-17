@@ -71,6 +71,9 @@ struct ChainStats {
     int totalFlippedBlocks = 0; // Total number of blocks that were flipped
     vector<int> currentChain;   // Current chain being followed
     vector<vector<int>> switchHistory; // History of chain switches
+    std::unordered_map<int, int>
+        flipFrequency; // Tracks the frequency of # of blocks flipped during any
+                       // given switch.
 };
 
 class EthanBitPeer : public Peer<bitcoinMessage> {
@@ -112,6 +115,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     int submitRate = 10; // Transaction submission rate
     int mineRate = 10;   // Block mining rate
 
+    void printFrequencyData() const;
     void printBlockChain() const;
     // Core Operations
     void checkIncomingMessages();       // Process incoming messages
