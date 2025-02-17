@@ -2,11 +2,164 @@
   "experiments": [
     {
       "algorithm": "EthanBitPeer",
+      "logFile": "Delay1.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 1
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay2.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 2
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay3.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 3
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay4.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 4
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay5.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 5
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay6.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 6
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay7.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 7
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay8.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 8
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
+      "logFile": "Delay9.txt",
+      "threadCount": 1,
+      "distribution": {
+        "type": "uniform",
+        "maxDelay": 9
+      },
+      "topology": {
+        "type": "complete",
+        "initialPeers": 100,
+        "totalPeers": 100,
+        "maxMsgsRec": 1
+      },
+      "tests": 1,
+      "rounds": 100
+    },
+    {
+      "algorithm": "EthanBitPeer",
       "logFile": "Delay10.txt",
       "threadCount": 1,
       "distribution": {
         "type": "uniform",
-        "maxDelay": 15
+        "maxDelay": 10
       },
       "topology": {
         "type": "complete",

@@ -108,7 +108,6 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
     }
 
     if (getRound() == 99) {
-        printBlockChain();
         printFrequencyData();
     }
 
@@ -135,15 +134,13 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
         frequencySummary +=
             std::to_string(entry.first) +
             (entry.first == 1 ? " block flipped: " : " blocks flipped: ") +
-            std::to_string(entry.second) + "\n";
+            std::to_string(entry.second) + ", ";
     }
     if (!frequencySummary.empty()) {
         frequencySummary.pop_back();
         frequencySummary.pop_back();
     }
-
     LogWriter::getTestLog()["Frequency"].push_back(frequencySummary);
-
     LogWriter::getTestLog()["Block Chain Length"].push_back(longestChain.size()
     );
     LogWriter::getTestLog()["Network Total Switches"].push_back(
