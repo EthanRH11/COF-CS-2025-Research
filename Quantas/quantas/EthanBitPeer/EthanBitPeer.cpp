@@ -420,12 +420,32 @@ void EthanBitPeer::printFrequencyData() const {
         [](const auto &a, const auto &b) { return a.first < b.first; }
     );
 
+    int totalNetworkFlippedBlocks = 0;
+
+    // Cast peers to EthanBitPeer to access their statistics
+    for (const auto &pair : minerStats) {
+        totalNetworkFlippedBlocks += pair.second.totalFlippedBlocks;
+    }
+
     std::string frequencySummary;
     for (const auto &entry : sortedFrequency) {
+        double percentFreq;
+        if (entry.first == 1) {
+            percentFreq =
+                ((static_cast<double>(entry.second) / totalNetworkFlippedBlocks
+                 ) *
+                 100);
+        } else {
+            int totalFlippage = (entry.first * entry.second);
+            percentFreq =
+                ((static_cast<double>(totalFlippage) / totalNetworkFlippedBlocks
+                 ) *
+                 100);
+        }
         frequencySummary +=
             std::to_string(entry.first) +
             (entry.first == 1 ? " block flipped: " : " blocks flipped: ") +
-            std::to_string(entry.second) + "\n";
+            std::to_string(percentFreq) + "%\n";
     }
 
     cout << "\n*****************************" << "\n";
