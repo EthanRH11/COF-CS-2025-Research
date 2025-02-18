@@ -24,7 +24,6 @@ namespace quantas {
 using std::cout;
 using std::endl;
 using std::lock_guard;
-using std::mt19937;
 using std::mutex;
 using std::random_device;
 using std::uniform_int_distribution;
@@ -57,8 +56,6 @@ void EthanBitPeer::linkBlocks() {
             int parentID = block.parentBlockID;
 
             if (parentID == -1) {
-                // cout << "DEBUG Linking genesis block" << block.blockID <<
-                // endl;
                 blocks[block.blockID] = block;
                 edges[parentID].push_back(block.blockID);
                 tips.insert(block.blockID);
@@ -66,18 +63,9 @@ void EthanBitPeer::linkBlocks() {
                 linked = true;
                 break;
             } else if (blocks.find(parentID) != blocks.end()) {
-                // cout << "DEBUG: Linking Block" << block.blockID << " to
-                // parent "
-                //      << parentID << endl;
 
                 blocks[block.blockID] = block;
                 edges[parentID].push_back(block.blockID);
-
-                if (edges[parentID].size() > 1) {
-                    // cout << "DEBUG: Fork detected at block " << parentID
-                    //      << "with " << edges[parentID].size() << " children"
-                    //      << endl;
-                }
 
                 tips.erase(parentID);
                 tips.insert(block.blockID);
@@ -167,7 +155,6 @@ void EthanBitPeer::checkIncomingMessages() {
             linkBlocks();
         } else {
             transactions.push_back(newMsg.getMessage().block);
-            // cout << "Transaction added" << endl;
         }
     }
 }
@@ -195,7 +182,6 @@ void EthanBitPeer::mineBlocks() {
             genesisBlock.blockID = blockCounter++;
             genesisBlock.parentBlockID = -1; // indicates genesis
 
-            // (Optionally set genesisBlock.transaction here if desired)
             blocks[genesisBlock.blockID] = genesisBlock;
             tips.insert(genesisBlock.blockID);
             longestChain.push_back(genesisBlock.blockID);
@@ -230,7 +216,6 @@ void EthanBitPeer::mineBlocks() {
 
 bitcoinBlock EthanBitPeer::findNextTransaction() {
     if (transactions.empty()) {
-        // cout << "No transactions available" << endl;
         return bitcoinBlock(
         ); // Return an empty block if there are no transactions
     }
@@ -284,42 +269,6 @@ void EthanBitPeer::updateLongestChain() {
     }
 }
 
-// void EthanBitPeer::updateLongestChain() {
-//     vector<int> newLongestChain;
-
-//     // For each tip, follow the chain back to genesis.
-//     for (int tip : tips) {
-//         vector<int> currentPath;
-//         int currentBlockID = tip;
-
-//         while (currentBlockID != -1) {
-//             currentPath.push_back(currentBlockID);
-//             auto it = blocks.find(currentBlockID);
-//             if (it != blocks.end()) {
-//                 currentBlockID = it->second.parentBlockID;
-//             } else {
-//                 break;
-//             }
-//         }
-
-//         // Reverse so that the chain runs from genesis to tip.
-//         reverse(currentPath.begin(), currentPath.end());
-
-//         // If this chain is longer than our current candidate, adopt it.
-//         if (currentPath.size() > newLongestChain.size()) {
-//             newLongestChain = currentPath;
-//         }
-//     }
-
-//     // If there is any change in our chain, record the switch.
-//     if (newLongestChain != longestChain) {
-//         trackChainSwitch(longestChain, newLongestChain);
-//         longestChain = newLongestChain;
-//         longestChainLength = longestChain.size();
-//         minerStats[id()].currentChain = longestChain;
-//     }
-// }
-
 int EthanBitPeer::countFlippedBlocks(
     const vector<int> &oldChain, const vector<int> &newChain
 ) {
@@ -331,7 +280,6 @@ int EthanBitPeer::countFlippedBlocks(
     }
 
     // Only count the blocks that were abandoned from the old chain
-    // (in your example, this would be D, E, F)
     return oldChain.size() - i;
 }
 
@@ -348,15 +296,6 @@ void EthanBitPeer::trackChainSwitch(
         minerStats[id()].totalSwitches++;
         minerStats[id()].totalFlippedBlocks += flippedBlocks;
         ++minerStats[id()].flipFrequency[flippedBlocks];
-        // Debug output to understand what's happening
-        // cout << "DEBUG: Miner " << id() << " switched chains." << endl;
-        // cout << "Old chain: ";
-        // for (int block : oldChain)
-        //     cout << block << " ";
-        // cout << "\nNew chain: ";
-        // for (int block : newChain)
-        //     cout << block << " ";
-        // cout << "\nFlipped blocks: " << flippedBlocks << endl;
     }
 }
 
