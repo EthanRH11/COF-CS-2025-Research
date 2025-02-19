@@ -1,414 +1,1404 @@
 {
-    "RunTime": 3.528575656,
+    "RunTime": 190.349399902,
     "tests": [
         {
             "Block Chain Length": [
-                0,
-                0,
-                1,
-                2,
-                2,
-                3,
-                4,
-                4,
-                4,
-                5,
-                6,
-                6,
-                6,
-                7,
-                8,
-                8,
-                9,
-                10,
-                10,
-                11,
-                12,
-                12,
-                13,
-                13,
-                13,
-                14,
-                15,
-                15,
-                16,
-                16,
-                17,
-                18,
-                18,
-                19,
-                20,
-                21,
-                21,
-                21,
-                22,
-                22,
-                23,
-                24,
-                24,
-                25,
-                25,
-                26,
-                26,
-                27,
-                27,
-                28,
-                28,
-                29,
-                30,
-                30,
-                31,
-                31,
-                31,
-                32,
-                33,
-                33,
-                34,
-                34,
-                35,
-                36,
-                36,
-                36,
-                38,
-                38,
-                39,
-                39,
-                40,
-                40,
-                41,
-                41,
-                41,
-                42,
-                43,
-                43,
-                44,
-                44,
-                45,
-                46,
-                46,
-                47,
-                48,
-                48,
-                49,
-                49,
-                49,
-                50,
-                51,
-                51,
-                52,
-                52,
-                53,
-                54,
-                54,
-                55,
-                55,
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 13, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 1, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                80
+            ],
+            "Network Total Switches": [
+                37
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 11, 3 blocks flipped: 6, 4 blocks flipped: 8, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                132
+            ],
+            "Network Total Switches": [
+                47
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 20, 2 blocks flipped: 6, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 4, 10 blocks flipped: 1, 12 blocks flipped: 1, 13 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                134
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 8, 2 blocks flipped: 13, 3 blocks flipped: 2, 5 blocks flipped: 2, 6 blocks flipped: 3, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                75
+            ],
+            "Network Total Switches": [
+                29
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 15, 2 blocks flipped: 14, 3 blocks flipped: 8, 4 blocks flipped: 2, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                98
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 10, 3 blocks flipped: 4, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                94
+            ],
+            "Network Total Switches": [
+                33
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 11, 3 blocks flipped: 8, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 2, 7 blocks flipped: 1, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                133
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 17, 2 blocks flipped: 5, 3 blocks flipped: 8, 4 blocks flipped: 8, 5 blocks flipped: 3, 6 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                104
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 12, 3 blocks flipped: 8, 4 blocks flipped: 7, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 1, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                137
+            ],
+            "Network Total Switches": [
+                49
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 10, 3 blocks flipped: 5, 4 blocks flipped: 6, 5 blocks flipped: 1, 6 blocks flipped: 1, 9 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1, 12 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                130
+            ],
+            "Network Total Switches": [
+                45
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 15, 2 blocks flipped: 11, 3 blocks flipped: 5, 4 blocks flipped: 5, 5 blocks flipped: 3, 8 blocks flipped: 1, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                113
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 8, 2 blocks flipped: 5, 3 blocks flipped: 7, 4 blocks flipped: 4, 6 blocks flipped: 1, 7 blocks flipped: 2, 8 blocks flipped: 3, 9 blocks flipped: 4, 10 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                155
+            ],
+            "Network Total Switches": [
+                36
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 6, 2 blocks flipped: 8, 3 blocks flipped: 6, 4 blocks flipped: 7, 5 blocks flipped: 4, 6 blocks flipped: 3, 7 blocks flipped: 3"
+            ],
+            "Network Total Flipped Blocks": [
+                127
+            ],
+            "Network Total Switches": [
+                37
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 9, 3 blocks flipped: 9, 4 blocks flipped: 2, 5 blocks flipped: 4, 6 blocks flipped: 2, 8 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                115
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 15, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 6 blocks flipped: 1, 10 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                100
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 7, 3 blocks flipped: 7, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                100
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 15, 3 blocks flipped: 4, 4 blocks flipped: 2, 5 blocks flipped: 1, 6 blocks flipped: 1, 7 blocks flipped: 3, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                102
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 17, 2 blocks flipped: 11, 3 blocks flipped: 4, 4 blocks flipped: 3, 6 blocks flipped: 2, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                82
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 7, 3 blocks flipped: 4, 4 blocks flipped: 8, 5 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 1, 10 blocks flipped: 1, 12 blocks flipped: 1, 14 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                142
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 6, 4 blocks flipped: 7, 5 blocks flipped: 4, 6 blocks flipped: 2, 8 blocks flipped: 1, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                138
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 8, 3 blocks flipped: 7, 4 blocks flipped: 8, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 1, 8 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                133
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 10, 3 blocks flipped: 4, 4 blocks flipped: 8, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 1, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                106
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 8, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 2, 6 blocks flipped: 3, 7 blocks flipped: 2, 8 blocks flipped: 2, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                141
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                61
+            ],
+            "Frequency": [
+                "1 block flipped: 20, 2 blocks flipped: 11, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 3"
+            ],
+            "Network Total Flipped Blocks": [
+                91
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 13, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 2, 6 blocks flipped: 1, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                91
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 7, 5 blocks flipped: 2, 6 blocks flipped: 2, 8 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                125
+            ],
+            "Network Total Switches": [
+                48
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 15, 2 blocks flipped: 12, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 4"
+            ],
+            "Network Total Flipped Blocks": [
+                125
+            ],
+            "Network Total Switches": [
+                45
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 11, 3 blocks flipped: 8, 4 blocks flipped: 2, 5 blocks flipped: 1, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                85
+            ],
+            "Network Total Switches": [
+                37
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 9, 3 blocks flipped: 8, 4 blocks flipped: 2, 5 blocks flipped: 4, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                90
+            ],
+            "Network Total Switches": [
+                35
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 10, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 1, 6 blocks flipped: 1, 7 blocks flipped: 1, 8 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                113
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 9, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 2, 8 blocks flipped: 3, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                131
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 12, 3 blocks flipped: 8, 4 blocks flipped: 2, 5 blocks flipped: 1, 6 blocks flipped: 4, 7 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                115
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 8, 3 blocks flipped: 7, 4 blocks flipped: 3, 5 blocks flipped: 5, 6 blocks flipped: 4, 7 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 2, 10 blocks flipped: 2, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                172
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 15, 2 blocks flipped: 12, 3 blocks flipped: 9, 4 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 3, 11 blocks flipped: 2, 13 blocks flipped: 1, 15 blocks flipped: 1, 16 blocks flipped: 1, 17 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                196
+            ],
+            "Network Total Switches": [
+                51
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 11, 3 blocks flipped: 7, 4 blocks flipped: 2, 5 blocks flipped: 3, 7 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                92
+            ],
+            "Network Total Switches": [
+                37
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 8, 3 blocks flipped: 6, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 3, 7 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                126
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
                 56
             ],
             "Frequency": [
-                "",
-                "",
-                "",
-                "",
-                "2 blocks flipped: 1",
-                "2 blocks flipped: 2",
-                "2 blocks flipped: 2, 3 blocks flipped: 1",
-                "2 blocks flipped: 2, 3 blocks flipped: 1",
-                "2 blocks flipped: 2, 3 blocks flipped: 1",
-                "2 blocks flipped: 2, 3 blocks flipped: 1, 4 blocks flipped: 1",
-                "2 blocks flipped: 2, 3 blocks flipped: 1, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 2, 3 blocks flipped: 1, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 2, 3 blocks flipped: 1, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 3, 3 blocks flipped: 1, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 3, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 4, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 1",
-                "2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 2, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 2",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 3",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 5, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 6, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 1, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 2, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 2, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 2, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 3, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 3, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 4, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 7, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 7, 3 blocks flipped: 4, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 7, 3 blocks flipped: 5, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 8, 3 blocks flipped: 5, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 5, 4 blocks flipped: 1, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 5, 4 blocks flipped: 2, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 4, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 1",
-                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 5, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 6, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 7, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 11, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 5, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 5, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 5, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 8, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 9, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 9, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 8, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 13, 3 blocks flipped: 8, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 8, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 8, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 9, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 9, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 2",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 9, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 3",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 9, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 3",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 9, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 3, 8 blocks flipped: 1",
-                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 9, 4 blocks flipped: 6, 5 blocks flipped: 6, 6 blocks flipped: 1, 7 blocks flipped: 3, 8 blocks flipped: 2"
+                "1 block flipped: 12, 2 blocks flipped: 8, 3 blocks flipped: 5, 4 blocks flipped: 2, 5 blocks flipped: 3, 6 blocks flipped: 1, 9 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1, 12 blocks flipped: 1, 16 blocks flipped: 1"
             ],
             "Network Total Flipped Blocks": [
-                0,
-                0,
-                0,
-                0,
-                2,
-                4,
-                7,
-                7,
-                7,
-                11,
-                16,
-                16,
-                16,
-                18,
-                21,
-                23,
-                25,
-                30,
-                30,
-                30,
-                31,
-                31,
-                31,
-                31,
-                31,
-                34,
-                34,
-                39,
-                44,
-                50,
-                50,
-                50,
-                50,
-                52,
-                54,
-                54,
-                54,
-                54,
-                55,
-                55,
-                55,
-                56,
-                56,
-                57,
-                58,
-                58,
-                61,
-                64,
-                66,
-                68,
-                72,
-                76,
-                76,
-                79,
-                79,
-                79,
-                79,
-                83,
-                88,
-                88,
-                88,
-                95,
-                102,
-                104,
-                104,
-                104,
-                107,
-                107,
-                107,
-                107,
-                108,
-                109,
-                110,
-                110,
-                110,
-                112,
-                114,
-                114,
-                118,
-                123,
-                123,
-                127,
-                127,
-                127,
-                128,
-                128,
-                129,
-                129,
-                129,
-                129,
-                132,
-                134,
-                136,
-                136,
-                139,
-                139,
-                146,
-                146,
-                154,
-                162
+                130
             ],
             "Network Total Switches": [
-                0,
-                0,
-                0,
-                0,
-                1,
-                2,
-                3,
-                3,
-                3,
-                4,
-                5,
-                5,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                10,
-                10,
-                11,
-                11,
-                11,
-                11,
-                11,
-                12,
-                12,
-                13,
-                14,
-                15,
-                15,
-                15,
-                15,
-                16,
-                17,
-                17,
-                17,
-                17,
-                18,
-                18,
-                18,
-                19,
-                19,
-                20,
-                21,
-                21,
-                22,
-                23,
-                24,
-                25,
-                26,
-                27,
-                27,
-                28,
-                28,
-                28,
-                28,
-                29,
-                30,
-                30,
-                30,
-                31,
-                32,
-                33,
-                33,
-                33,
-                34,
-                34,
-                34,
-                34,
-                35,
-                36,
-                37,
-                37,
-                37,
-                38,
-                39,
-                39,
-                40,
-                41,
-                41,
-                42,
-                42,
-                42,
-                43,
-                43,
-                44,
-                44,
-                44,
-                44,
-                45,
-                46,
-                47,
-                47,
-                48,
-                48,
-                49,
-                49,
-                50,
-                51
+                36
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 11, 3 blocks flipped: 4, 4 blocks flipped: 6, 5 blocks flipped: 3, 6 blocks flipped: 2, 7 blocks flipped: 2, 8 blocks flipped: 3, 10 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                152
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 20, 2 blocks flipped: 10, 3 blocks flipped: 2, 4 blocks flipped: 4, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 4"
+            ],
+            "Network Total Flipped Blocks": [
+                106
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 8, 3 blocks flipped: 5, 4 blocks flipped: 4, 5 blocks flipped: 3, 10 blocks flipped: 1, 11 blocks flipped: 1, 14 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                107
+            ],
+            "Network Total Switches": [
+                33
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 15, 2 blocks flipped: 13, 3 blocks flipped: 6, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 2, 7 blocks flipped: 1, 9 blocks flipped: 3"
+            ],
+            "Network Total Flipped Blocks": [
+                135
+            ],
+            "Network Total Switches": [
+                47
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 14, 3 blocks flipped: 6, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 3, 8 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                120
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 11, 3 blocks flipped: 7, 4 blocks flipped: 2, 5 blocks flipped: 3, 6 blocks flipped: 2, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                94
+            ],
+            "Network Total Switches": [
+                35
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 16, 2 blocks flipped: 5, 3 blocks flipped: 6, 4 blocks flipped: 2, 5 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                57
+            ],
+            "Network Total Switches": [
+                30
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 9, 3 blocks flipped: 4, 4 blocks flipped: 7, 5 blocks flipped: 4, 6 blocks flipped: 3, 7 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 1, 10 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                150
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 7, 3 blocks flipped: 10, 4 blocks flipped: 6, 5 blocks flipped: 5, 6 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                109
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 10, 3 blocks flipped: 9, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 3, 7 blocks flipped: 2, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                126
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 14, 3 blocks flipped: 6, 4 blocks flipped: 3, 5 blocks flipped: 2, 6 blocks flipped: 2, 7 blocks flipped: 3, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                119
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 12, 3 blocks flipped: 7, 4 blocks flipped: 5, 5 blocks flipped: 1, 6 blocks flipped: 1, 9 blocks flipped: 1, 10 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                113
+            ],
+            "Network Total Switches": [
+                46
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 14, 3 blocks flipped: 7, 4 blocks flipped: 6, 5 blocks flipped: 5"
+            ],
+            "Network Total Flipped Blocks": [
+                109
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 20, 2 blocks flipped: 10, 3 blocks flipped: 9, 4 blocks flipped: 4, 5 blocks flipped: 3, 6 blocks flipped: 3, 7 blocks flipped: 3, 11 blocks flipped: 1, 12 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                160
+            ],
+            "Network Total Switches": [
+                54
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 8, 3 blocks flipped: 10, 4 blocks flipped: 7, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                127
+            ],
+            "Network Total Switches": [
+                46
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 16, 2 blocks flipped: 13, 3 blocks flipped: 6, 4 blocks flipped: 6, 5 blocks flipped: 1, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                102
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 13, 3 blocks flipped: 3, 4 blocks flipped: 2, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                92
+            ],
+            "Network Total Switches": [
+                36
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 10, 3 blocks flipped: 5, 4 blocks flipped: 7, 5 blocks flipped: 5, 6 blocks flipped: 4"
+            ],
+            "Network Total Flipped Blocks": [
+                125
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 15, 3 blocks flipped: 8, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 1, 8 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                131
+            ],
+            "Network Total Switches": [
+                52
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 6, 3 blocks flipped: 8, 4 blocks flipped: 7, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                105
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 8, 2 blocks flipped: 19, 3 blocks flipped: 3, 4 blocks flipped: 3, 5 blocks flipped: 2, 6 blocks flipped: 2, 7 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                113
+            ],
+            "Network Total Switches": [
+                40
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 6, 2 blocks flipped: 10, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 1, 7 blocks flipped: 3, 10 blocks flipped: 1, 12 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                123
+            ],
+            "Network Total Switches": [
+                34
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 4, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 5, 6 blocks flipped: 4, 7 blocks flipped: 2, 8 blocks flipped: 4, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                158
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 3, 3 blocks flipped: 11, 4 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 2, 8 blocks flipped: 2, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                118
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 12, 3 blocks flipped: 2, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 2, 7 blocks flipped: 3, 8 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                134
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 11, 3 blocks flipped: 9, 4 blocks flipped: 5, 5 blocks flipped: 3, 6 blocks flipped: 3, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                118
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 6, 2 blocks flipped: 10, 3 blocks flipped: 2, 4 blocks flipped: 8, 5 blocks flipped: 4, 6 blocks flipped: 1, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                108
+            ],
+            "Network Total Switches": [
+                33
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 16, 2 blocks flipped: 8, 3 blocks flipped: 7, 5 blocks flipped: 3, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                79
+            ],
+            "Network Total Switches": [
+                35
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 12, 3 blocks flipped: 8, 4 blocks flipped: 4, 5 blocks flipped: 1, 6 blocks flipped: 2, 7 blocks flipped: 2, 9 blocks flipped: 1, 11 blocks flipped: 1, 14 blocks flipped: 2, 16 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                173
+            ],
+            "Network Total Switches": [
+                48
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 8, 3 blocks flipped: 10, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 1, 8 blocks flipped: 1, 10 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                126
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 7, 3 blocks flipped: 7, 4 blocks flipped: 5, 5 blocks flipped: 2, 6 blocks flipped: 4, 7 blocks flipped: 2, 8 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                146
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 17, 2 blocks flipped: 7, 3 blocks flipped: 5, 4 blocks flipped: 4, 5 blocks flipped: 3, 6 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                89
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 9, 3 blocks flipped: 8, 4 blocks flipped: 2, 5 blocks flipped: 5, 6 blocks flipped: 1, 7 blocks flipped: 3"
+            ],
+            "Network Total Flipped Blocks": [
+                120
+            ],
+            "Network Total Switches": [
+                46
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 8, 3 blocks flipped: 4, 4 blocks flipped: 3, 5 blocks flipped: 2, 6 blocks flipped: 3, 7 blocks flipped: 4, 8 blocks flipped: 2, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                135
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 17, 2 blocks flipped: 12, 3 blocks flipped: 8, 4 blocks flipped: 1, 5 blocks flipped: 3, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                91
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                56
+            ],
+            "Frequency": [
+                "1 block flipped: 4, 2 blocks flipped: 11, 3 blocks flipped: 5, 4 blocks flipped: 6, 5 blocks flipped: 3, 6 blocks flipped: 4, 7 blocks flipped: 1, 8 blocks flipped: 2, 9 blocks flipped: 1, 10 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                146
+            ],
+            "Network Total Switches": [
+                38
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 14, 3 blocks flipped: 5, 4 blocks flipped: 1, 5 blocks flipped: 2, 6 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                94
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 11, 3 blocks flipped: 4, 4 blocks flipped: 2, 5 blocks flipped: 4, 6 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                78
+            ],
+            "Network Total Switches": [
+                32
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 13, 3 blocks flipped: 6, 4 blocks flipped: 7, 5 blocks flipped: 3, 6 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                111
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 5, 2 blocks flipped: 9, 3 blocks flipped: 3, 4 blocks flipped: 3, 5 blocks flipped: 3, 6 blocks flipped: 2, 7 blocks flipped: 1, 8 blocks flipped: 1, 9 blocks flipped: 1, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                106
+            ],
+            "Network Total Switches": [
+                29
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 16, 2 blocks flipped: 13, 3 blocks flipped: 9, 4 blocks flipped: 1, 5 blocks flipped: 1, 7 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                94
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 14, 2 blocks flipped: 8, 3 blocks flipped: 4, 4 blocks flipped: 5, 5 blocks flipped: 1, 6 blocks flipped: 4, 7 blocks flipped: 2, 9 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                135
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 12, 3 blocks flipped: 8, 4 blocks flipped: 5, 5 blocks flipped: 5, 6 blocks flipped: 2, 7 blocks flipped: 1, 9 blocks flipped: 1, 14 blocks flipped: 1, 15 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                175
+            ],
+            "Network Total Switches": [
+                47
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 7, 3 blocks flipped: 8, 4 blocks flipped: 7, 5 blocks flipped: 2, 6 blocks flipped: 4, 7 blocks flipped: 3, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                139
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 7, 3 blocks flipped: 6, 4 blocks flipped: 2, 5 blocks flipped: 5, 6 blocks flipped: 2, 7 blocks flipped: 3, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                124
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 10, 3 blocks flipped: 8, 4 blocks flipped: 4, 5 blocks flipped: 7, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                115
+            ],
+            "Network Total Switches": [
+                43
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 16, 2 blocks flipped: 7, 3 blocks flipped: 10, 4 blocks flipped: 4, 5 blocks flipped: 4, 6 blocks flipped: 2, 7 blocks flipped: 4, 8 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                152
+            ],
+            "Network Total Switches": [
+                49
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 7, 3 blocks flipped: 7, 4 blocks flipped: 4, 5 blocks flipped: 3, 6 blocks flipped: 2, 7 blocks flipped: 2, 8 blocks flipped: 1, 10 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                122
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 9, 3 blocks flipped: 5, 4 blocks flipped: 3, 5 blocks flipped: 3, 6 blocks flipped: 3, 7 blocks flipped: 1, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                105
+            ],
+            "Network Total Switches": [
+                37
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 7, 2 blocks flipped: 12, 3 blocks flipped: 5, 4 blocks flipped: 9, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 1, 8 blocks flipped: 3, 9 blocks flipped: 2, 10 blocks flipped: 1, 12 blocks flipped: 1, 13 blocks flipped: 1, 14 blocks flipped: 1, 15 blocks flipped: 1, 16 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                227
+            ],
+            "Network Total Switches": [
+                48
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 6, 3 blocks flipped: 8, 4 blocks flipped: 4, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                88
+            ],
+            "Network Total Switches": [
+                35
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 4, 3 blocks flipped: 10, 4 blocks flipped: 5, 5 blocks flipped: 3, 6 blocks flipped: 3, 7 blocks flipped: 4, 8 blocks flipped: 2, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                157
+            ],
+            "Network Total Switches": [
+                45
+            ]
+        },
+        {
+            "Block Chain Length": [
+                56
+            ],
+            "Frequency": [
+                "1 block flipped: 10, 2 blocks flipped: 9, 3 blocks flipped: 4, 4 blocks flipped: 3, 5 blocks flipped: 4, 6 blocks flipped: 5, 7 blocks flipped: 3, 9 blocks flipped: 1, 10 blocks flipped: 1, 11 blocks flipped: 1, 12 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                165
+            ],
+            "Network Total Switches": [
+                42
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 8, 3 blocks flipped: 8, 4 blocks flipped: 5, 5 blocks flipped: 3, 6 blocks flipped: 2, 7 blocks flipped: 2, 8 blocks flipped: 1, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                131
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                60
+            ],
+            "Frequency": [
+                "1 block flipped: 13, 2 blocks flipped: 13, 3 blocks flipped: 6, 4 blocks flipped: 4, 5 blocks flipped: 3, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                101
+            ],
+            "Network Total Switches": [
+                41
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 18, 2 blocks flipped: 10, 3 blocks flipped: 9, 4 blocks flipped: 7, 5 blocks flipped: 1, 6 blocks flipped: 1, 7 blocks flipped: 1, 9 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                120
+            ],
+            "Network Total Switches": [
+                48
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 19, 2 blocks flipped: 11, 3 blocks flipped: 4, 4 blocks flipped: 3, 5 blocks flipped: 1, 6 blocks flipped: 3, 7 blocks flipped: 1, 9 blocks flipped: 2"
+            ],
+            "Network Total Flipped Blocks": [
+                113
+            ],
+            "Network Total Switches": [
+                44
+            ]
+        },
+        {
+            "Block Chain Length": [
+                58
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 11, 3 blocks flipped: 9, 4 blocks flipped: 5, 5 blocks flipped: 4, 6 blocks flipped: 4, 7 blocks flipped: 1, 10 blocks flipped: 2, 11 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                163
+            ],
+            "Network Total Switches": [
+                49
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 8, 3 blocks flipped: 9, 4 blocks flipped: 8, 6 blocks flipped: 2, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                107
+            ],
+            "Network Total Switches": [
+                40
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 10, 3 blocks flipped: 6, 4 blocks flipped: 2, 5 blocks flipped: 2, 6 blocks flipped: 1, 7 blocks flipped: 3, 10 blocks flipped: 1, 11 blocks flipped: 1, 12 blocks flipped: 1, 13 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                140
+            ],
+            "Network Total Switches": [
+                39
+            ]
+        },
+        {
+            "Block Chain Length": [
+                59
+            ],
+            "Frequency": [
+                "1 block flipped: 11, 2 blocks flipped: 4, 3 blocks flipped: 3, 4 blocks flipped: 1, 5 blocks flipped: 2, 6 blocks flipped: 3, 7 blocks flipped: 1, 8 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                75
+            ],
+            "Network Total Switches": [
+                26
+            ]
+        },
+        {
+            "Block Chain Length": [
+                57
+            ],
+            "Frequency": [
+                "1 block flipped: 12, 2 blocks flipped: 9, 3 blocks flipped: 5, 4 blocks flipped: 6, 5 blocks flipped: 1, 6 blocks flipped: 1, 7 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                87
+            ],
+            "Network Total Switches": [
+                35
+            ]
+        },
+        {
+            "Block Chain Length": [
+                56
+            ],
+            "Frequency": [
+                "1 block flipped: 9, 2 blocks flipped: 8, 3 blocks flipped: 4, 4 blocks flipped: 4, 5 blocks flipped: 3, 6 blocks flipped: 4, 7 blocks flipped: 4, 8 blocks flipped: 1, 9 blocks flipped: 1, 11 blocks flipped: 1, 13 blocks flipped: 1"
+            ],
+            "Network Total Flipped Blocks": [
+                161
+            ],
+            "Network Total Switches": [
+                40
             ]
         }
     ]

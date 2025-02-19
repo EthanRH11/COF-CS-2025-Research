@@ -95,9 +95,9 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
         totalNetworkFlippedBlocks += pair.second.totalFlippedBlocks;
     }
 
-    if (getRound() == 99) {
-        printFrequencyData();
-    }
+    // if (getRound() == 99) {
+    //     printFrequencyData();
+    // }
 
     std::unordered_map<int, int> globalFlipFrequency;
     for (const auto &pair : minerStats) {
@@ -128,22 +128,18 @@ void EthanBitPeer::endOfRound(const vector<Peer<bitcoinMessage> *> &_peers) {
         frequencySummary.pop_back();
         frequencySummary.pop_back();
     }
-    LogWriter::getTestLog()["Frequency"].push_back(frequencySummary);
-    LogWriter::getTestLog()["Block Chain Length"].push_back(longestChain.size()
-    );
-    LogWriter::getTestLog()["Network Total Switches"].push_back(
-        totalNetworkSwitches
-    );
-    LogWriter::getTestLog()["Network Total Flipped Blocks"].push_back(
-        totalNetworkFlippedBlocks
-    );
 
-    if (getRound() == 100) {
-        cout << "frequency summary" << endl;
-        cout << endl;
-        cout << frequencySummary << endl;
-        cout << endl;
-        cout << "***********************";
+    if (getRound() == 99) {
+        LogWriter::getTestLog()["Frequency"].push_back(frequencySummary);
+        LogWriter::getTestLog()["Block Chain Length"].push_back(
+            longestChain.size()
+        );
+        LogWriter::getTestLog()["Network Total Switches"].push_back(
+            totalNetworkSwitches
+        );
+        LogWriter::getTestLog()["Network Total Flipped Blocks"].push_back(
+            totalNetworkFlippedBlocks
+        );
     }
 }
 
@@ -367,25 +363,35 @@ void EthanBitPeer::printFrequencyData() const {
     }
 
     std::string frequencySummary;
+    // Number of Blocks Flipped
     for (const auto &entry : sortedFrequency) {
-        double percentFreq;
-        if (entry.first == 1) {
-            percentFreq =
-                ((static_cast<double>(entry.second) / totalNetworkFlippedBlocks
-                 ) *
-                 100);
-        } else {
-            int totalFlippage = (entry.first * entry.second);
-            percentFreq =
-                ((static_cast<double>(totalFlippage) / totalNetworkFlippedBlocks
-                 ) *
-                 100);
-        }
         frequencySummary +=
             std::to_string(entry.first) +
             (entry.first == 1 ? " block flipped: " : " blocks flipped: ") +
-            std::to_string(percentFreq) + "%\n";
+            std::to_string(entry.second) + " times\n";
     }
+
+    // for (const auto &entry : sortedFrequency) {
+    //     double percentFreq;
+    //     if (entry.first == 1) {
+    //         percentFreq =
+    //             ((static_cast<double>(entry.second) /
+    //             totalNetworkFlippedBlocks
+    //              ) *
+    //              100);
+    //     } else {
+    //         int totalFlippage = (entry.first * entry.second);
+    //         percentFreq =
+    //             ((static_cast<double>(totalFlippage) /
+    //             totalNetworkFlippedBlocks
+    //              ) *
+    //              100);
+    //     }
+    //     frequencySummary +=
+    //         std::to_string(entry.first) +
+    //         (entry.first == 1 ? " block flipped: " : " blocks flipped: ") +
+    //         std::to_string(percentFreq) + "%\n";
+    // }
 
     cout << "\n*****************************" << "\n";
     cout << "\nFrequency Data (Global): " << "\n";
