@@ -40,7 +40,7 @@ High-value transactions benefit significantly from additional waiting time
 Network conditions significantly impact optimal waiting periods
 The security/time tradeoff follows a logarithmic rather than linear relationship
 
-Future Work
+## Future Work
 
 Implementation of more sophisticated attacker strategies
 Economic models incorporating opportunity costs of waiting
