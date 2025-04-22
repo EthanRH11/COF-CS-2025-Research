@@ -1,0 +1,21 @@
+{
+    "experiments": [
+        {
+            "algorithm": "EthanBitPeerThread",
+            "logFile": "Delay1.txt",
+            "threadCount": 40,
+            "distribution": {
+                "type": "uniform",
+                "maxDelay": 1
+            },
+            "topology": {
+                "type": "complete",
+                "initialPeers": 1000,
+                "totalPeers": 1000,
+                "maxMsgsRec": 1
+            },
+            "tests": 1,
+            "rounds": 1000
+        }
+    ]
+}
