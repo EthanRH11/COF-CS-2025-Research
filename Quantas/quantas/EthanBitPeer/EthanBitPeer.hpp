@@ -108,6 +108,7 @@ class EthanBitPeer : public Peer<bitcoinMessage> {
     vector<bitcoinBlock> unlinkedBlocks;   // Blocks waiting to be linked
     vector<bitcoinBlock> transactions;     // Received transactions
     static int blockCounter;               // Global block counter
+    static mutex blockCounter_mutex;       // Mutex for blockCounter
     static int currentTransaction;         // Current transaction ID
     static mutex currentTransaction_mutex; // Mutex for transaction ID
 

@@ -169,6 +169,7 @@ void EthanBitPeer::submitTrans() {
 bool EthanBitPeer::checkMineBlock() { return randMod(mineRate) == 0; }
 
 void EthanBitPeer::mineBlocks() {
+    const lock_guard<mutex> lock(blockCounter_mutex);
     if (!transactions.empty()) {
         bitcoinBlock newBlock;
 

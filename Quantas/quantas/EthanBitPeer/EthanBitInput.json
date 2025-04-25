@@ -3,19 +3,19 @@
     {
       "algorithm": "EthanBitPeer",
       "logFile": "Delay10.txt",
-      "threadCount": 1,
+      "threadCount": 48,
       "distribution": {
         "type": "uniform",
         "maxDelay": 10
       },
       "topology": {
         "type": "complete",
-        "initialPeers": 100,
-        "totalPeers": 100,
+        "initialPeers": 1000,
+        "totalPeers": 1000,
         "maxMsgsRec": 1
       },
-      "tests": 100,
-      "rounds": 100
+      "tests": 1,
+      "rounds": 1000
     }
   ]
 }
